@@ -80,8 +80,15 @@ void FishManager::Update(float deltaTime)
 
 void FishManager::Render(HDC hdc) const
 {
+    // Simple culling: skip fish that are outside the water rect plus a margin.
+    RECT view = waterRect_;
+    InflateRect(&view, 32, 32);
     for (const auto& fish : fishes_)
     {
+        RECT r = fish.GetRect();
+        RECT overlap{};
+        if (!IntersectRect(&overlap, &view, &r))
+            continue;
         fish.Render(hdc);
     }
 }

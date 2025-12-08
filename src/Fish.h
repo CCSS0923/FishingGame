@@ -42,15 +42,16 @@ public:
     bool IsAttached() const { return attached_; }
 
     FishType GetType() const { return type_; }
-    int GetScoreValue() const { return GetTraits(type_).score; }
-    int GetMoneyValue() const { return GetTraits(type_).money; }
-    float GetTensionAdd() const { return GetTraits(type_).tensionAdd; }
+    int GetScoreValue() const { return traits_.score; }
+    int GetMoneyValue() const { return traits_.money; }
+    float GetTensionAdd() const { return traits_.tensionAdd; }
 
     void SetPosition(float x, float y) { x_ = x; y_ = y; }
     Float2 GetPosition() const { return Float2{ x_, y_ }; }
     void SetSprite(Sprite* sprite) { sprite_ = sprite; }
 
 private:
+    FishTraits traits_;
     float x_;
     float y_;
     float direction_;

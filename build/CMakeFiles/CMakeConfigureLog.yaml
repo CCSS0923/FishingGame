@@ -105,7 +105,7 @@ events:
       The output was:
       0
       msbuild 버전 17.14.23+b0019275e(.NET Framework용)
-      빌드 시작: 2025-12-08 오후 9:07:09
+      빌드 시작: 2025-12-08 오후 9:58:41
       
       1 노드의 "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\4.2.0-rc1\\CompilerIdCXX\\CompilerIdCXX.vcxproj" 프로젝트(기본 대상)입니다.
       PrepareForBuild:
@@ -143,7 +143,7 @@ events:
           경고 0개
           오류 0개
       
-      경과 시간: 00:00:01.07
+      경과 시간: 00:00:00.92
       
       
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -1058,8 +1058,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "D:/Cpp/FishingGame/build/CMakeFiles/CMakeScratch/TryCompile-thg9hj"
-      binary: "D:/Cpp/FishingGame/build/CMakeFiles/CMakeScratch/TryCompile-thg9hj"
+      source: "D:/Cpp/FishingGame/build/CMakeFiles/CMakeScratch/TryCompile-8bnyo2"
+      binary: "D:/Cpp/FishingGame/build/CMakeFiles/CMakeScratch/TryCompile-8bnyo2"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -1069,48 +1069,48 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'D:/Cpp/FishingGame/build/CMakeFiles/CMakeScratch/TryCompile-thg9hj'
+        Change Dir: 'D:/Cpp/FishingGame/build/CMakeFiles/CMakeScratch/TryCompile-8bnyo2'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_c3152.vcxproj /p:Configuration=Debug /p:Platform=Win32 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_b4395.vcxproj /p:Configuration=Debug /p:Platform=Win32 /p:VisualStudioVersion=17.0 /v:n
         msbuild 버전 17.14.23+b0019275e(.NET Framework용)
-        빌드 시작: 2025-12-08 오후 9:07:10
+        빌드 시작: 2025-12-08 오후 9:58:42
         
-        1 노드의 "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-thg9hj\\cmTC_c3152.vcxproj" 프로젝트(기본 대상)입니다.
+        1 노드의 "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8bnyo2\\cmTC_b4395.vcxproj" 프로젝트(기본 대상)입니다.
         PrepareForBuild:
           구조적 출력을 사용할 수 있습니다. 컴파일러 진단의 서식은 오류 계층 구조를 반영합니다. 자세한 내용은 https://aka.ms/cpp/structured-output을 참조하세요.
-          "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-thg9hj\\Debug\\" 디렉터리를 만들고 있습니다.
-          "cmTC_c3152.dir\\Debug\\cmTC_c3152.tlog\\" 디렉터리를 만들고 있습니다.
+          "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8bnyo2\\Debug\\" 디렉터리를 만들고 있습니다.
+          "cmTC_b4395.dir\\Debug\\cmTC_b4395.tlog\\" 디렉터리를 만들고 있습니다.
         InitializeBuildStatus:
-          "AlwaysCreate"이(가) 지정되었기 때문에 "cmTC_c3152.dir\\Debug\\cmTC_c3152.tlog\\unsuccessfulbuild"을(를) 만들고 있습니다.
-          "cmTC_c3152.dir\\Debug\\cmTC_c3152.tlog\\unsuccessfulbuild"에 연결(touching)하고 있습니다.
+          "AlwaysCreate"이(가) 지정되었기 때문에 "cmTC_b4395.dir\\Debug\\cmTC_b4395.tlog\\unsuccessfulbuild"을(를) 만들고 있습니다.
+          "cmTC_b4395.dir\\Debug\\cmTC_b4395.tlog\\unsuccessfulbuild"에 연결(touching)하고 있습니다.
         VcpkgTripletSelection:
           Using triplet "x86-windows" from "D:\\vcpkg\\installed\\x86-windows\\"
           Using normalized configuration "Debug"
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x86\\CL.exe /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GR /Fo"cmTC_c3152.dir\\Debug\\\\" /Fd"D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-thg9hj\\cmTC_c3152.dir\\Debug\\vc143.pdb" /external:W1 /TP /analyze- /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x86\\CL.exe /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GR /Fo"cmTC_b4395.dir\\Debug\\\\" /Fd"D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8bnyo2\\cmTC_b4395.dir\\Debug\\vc143.pdb" /external:W1 /TP /analyze- /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
           x86용 Microsoft (R) C/C++ 최적화 컴파일러 버전 19.44.35221
           Copyright (c) Microsoft Corporation. All rights reserved.
-          cl /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GR /Fo"cmTC_c3152.dir\\Debug\\\\" /Fd"D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-thg9hj\\cmTC_c3152.dir\\Debug\\vc143.pdb" /external:W1 /TP /analyze- /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
+          cl /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GR /Fo"cmTC_b4395.dir\\Debug\\\\" /Fd"D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8bnyo2\\cmTC_b4395.dir\\Debug\\vc143.pdb" /external:W1 /TP /analyze- /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
           CMakeCXXCompilerABI.cpp
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x86\\link.exe /OUT:"D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-thg9hj\\Debug\\cmTC_c3152.exe" /INCREMENTAL /ILK:"cmTC_c3152.dir\\Debug\\cmTC_c3152.ilk" /NOLOGO /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\debug\\lib" /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\debug\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "D:\\vcpkg\\installed\\x86-windows\\debug\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Cpp/FishingGame/build/CMakeFiles/CMakeScratch/TryCompile-thg9hj/Debug/cmTC_c3152.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"D:/Cpp/FishingGame/build/CMakeFiles/CMakeScratch/TryCompile-thg9hj/Debug/cmTC_c3152.lib" /MACHINE:X86  /machine:X86 cmTC_c3152.dir\\Debug\\CMakeCXXCompilerABI.obj
-          cmTC_c3152.vcxproj -> D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-thg9hj\\Debug\\cmTC_c3152.exe
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x86\\link.exe /OUT:"D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8bnyo2\\Debug\\cmTC_b4395.exe" /INCREMENTAL /ILK:"cmTC_b4395.dir\\Debug\\cmTC_b4395.ilk" /NOLOGO /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\debug\\lib" /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\debug\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "D:\\vcpkg\\installed\\x86-windows\\debug\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Cpp/FishingGame/build/CMakeFiles/CMakeScratch/TryCompile-8bnyo2/Debug/cmTC_b4395.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"D:/Cpp/FishingGame/build/CMakeFiles/CMakeScratch/TryCompile-8bnyo2/Debug/cmTC_b4395.lib" /MACHINE:X86  /machine:X86 cmTC_b4395.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_b4395.vcxproj -> D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8bnyo2\\Debug\\cmTC_b4395.exe
         AppLocalFromInstalled:
-          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-thg9hj\\Debug\\cmTC_c3152.exe" "D:\\vcpkg\\installed\\x86-windows\\debug\\bin" "cmTC_c3152.dir\\Debug\\cmTC_c3152.tlog\\cmTC_c3152.write.1u.tlog" "cmTC_c3152.dir\\Debug\\vcpkg.applocal.log"
+          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8bnyo2\\Debug\\cmTC_b4395.exe" "D:\\vcpkg\\installed\\x86-windows\\debug\\bin" "cmTC_b4395.dir\\Debug\\cmTC_b4395.tlog\\cmTC_b4395.write.1u.tlog" "cmTC_b4395.dir\\Debug\\vcpkg.applocal.log"
           'pwsh.exe' is not recognized as an internal or external command,
           operable program or batch file.
-          "pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-thg9hj\\Debug\\cmTC_c3152.exe" "D:\\vcpkg\\installed\\x86-windows\\debug\\bin" "cmTC_c3152.dir\\Debug\\cmTC_c3152.tlog\\cmTC_c3152.write.1u.tlog" "cmTC_c3152.dir\\Debug\\vcpkg.applocal.log"" 명령이 종료되었습니다(코드: 9009).
-          "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-thg9hj\\Debug\\cmTC_c3152.exe" "D:\\vcpkg\\installed\\x86-windows\\debug\\bin" "cmTC_c3152.dir\\Debug\\cmTC_c3152.tlog\\cmTC_c3152.write.1u.tlog" "cmTC_c3152.dir\\Debug\\vcpkg.applocal.log"
+          "pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8bnyo2\\Debug\\cmTC_b4395.exe" "D:\\vcpkg\\installed\\x86-windows\\debug\\bin" "cmTC_b4395.dir\\Debug\\cmTC_b4395.tlog\\cmTC_b4395.write.1u.tlog" "cmTC_b4395.dir\\Debug\\vcpkg.applocal.log"" 명령이 종료되었습니다(코드: 9009).
+          "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8bnyo2\\Debug\\cmTC_b4395.exe" "D:\\vcpkg\\installed\\x86-windows\\debug\\bin" "cmTC_b4395.dir\\Debug\\cmTC_b4395.tlog\\cmTC_b4395.write.1u.tlog" "cmTC_b4395.dir\\Debug\\vcpkg.applocal.log"
         FinalizeBuildStatus:
-          "cmTC_c3152.dir\\Debug\\cmTC_c3152.tlog\\unsuccessfulbuild" 파일을 삭제하고 있습니다.
-          "cmTC_c3152.dir\\Debug\\cmTC_c3152.tlog\\cmTC_c3152.lastbuildstate"에 연결(touching)하고 있습니다.
-        "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-thg9hj\\cmTC_c3152.vcxproj" 프로젝트를 빌드했습니다(기본 대상).
+          "cmTC_b4395.dir\\Debug\\cmTC_b4395.tlog\\unsuccessfulbuild" 파일을 삭제하고 있습니다.
+          "cmTC_b4395.dir\\Debug\\cmTC_b4395.tlog\\cmTC_b4395.lastbuildstate"에 연결(touching)하고 있습니다.
+        "D:\\Cpp\\FishingGame\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8bnyo2\\cmTC_b4395.vcxproj" 프로젝트를 빌드했습니다(기본 대상).
         
         빌드했습니다.
             경고 0개
             오류 0개
         
-        경과 시간: 00:00:01.27
+        경과 시간: 00:00:00.83
         
       exitCode: 0
   -

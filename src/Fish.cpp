@@ -50,9 +50,9 @@ Fish Fish::SpawnRandom(const RECT& waterRect, std::mt19937& rng)
     else
         fish.type_ = FishType::Large;
 
-    FishTraits traits = GetTraits(fish.type_);
+    fish.traits_ = GetTraits(fish.type_);
     fish.y_ = yDist(rng);
-    fish.x_ = (fish.direction_ > 0.0f) ? static_cast<float>(waterRect.left - traits.size.cx) : static_cast<float>(waterRect.right + traits.size.cx);
+    fish.x_ = (fish.direction_ > 0.0f) ? static_cast<float>(waterRect.left - fish.traits_.size.cx) : static_cast<float>(waterRect.right + fish.traits_.size.cx);
 
     return fish;
 }
@@ -67,11 +67,10 @@ void Fish::Update(float deltaTime, const RECT& bounds)
 
     if (!attached_)
     {
-        FishTraits traits = GetTraits(type_);
-        x_ += direction_ * traits.speed * deltaTime;
+        x_ += direction_ * traits_.speed * deltaTime;
 
-        if ((direction_ > 0 && x_ > bounds.right + traits.size.cx) ||
-            (direction_ < 0 && x_ + traits.size.cx < bounds.left))
+        if ((direction_ > 0 && x_ > bounds.right + traits_.size.cx) ||
+            (direction_ < 0 && x_ + traits_.size.cx < bounds.left))
         {
             alive_ = false;
         }
@@ -83,27 +82,23 @@ void Fish::Render(HDC hdc) const
     if (!alive_)
         return;
 
-    FishTraits traits = GetTraits(type_);
-    const int w = traits.size.cx;
-    const int h = traits.size.cy;
+    const int w = traits_.size.cx;
+    const int h = traits_.size.cy;
 
     const int drawX = static_cast<int>(x_);
     const int drawY = static_cast<int>(y_);
 
     COLORREF fillColor = RGB(220, 140, 80);
     COLORREF outline = RGB(120, 80, 50);
-    COLORREF accent = RGB(255, 255, 255);
     if (type_ == FishType::Medium)
     {
         fillColor = RGB(240, 180, 80);
         outline = RGB(150, 110, 40);
-        accent = RGB(255, 230, 180);
     }
     else if (type_ == FishType::Large)
     {
         fillColor = RGB(200, 100, 60);
         outline = RGB(100, 60, 30);
-        accent = RGB(255, 210, 160);
     }
 
     if (sprite_ && sprite_->IsValid())
@@ -137,20 +132,18 @@ void Fish::Render(HDC hdc) const
 
 RECT Fish::GetRect() const
 {
-    FishTraits traits = GetTraits(type_);
     const int margin = 2; // include outline thickness
     RECT r{};
     r.left = static_cast<LONG>(x_) - margin;
     r.top = static_cast<LONG>(y_) - margin;
-    r.right = r.left + traits.size.cx + margin * 2;
-    r.bottom = r.top + traits.size.cy + margin * 2;
+    r.right = r.left + traits_.size.cx + margin * 2;
+    r.bottom = r.top + traits_.size.cy + margin * 2;
     return r;
 }
 
 void Fish::AttachTo(const POINT& hookPos)
 {
     attached_ = true;
-    FishTraits traits = GetTraits(type_);
-    x_ = static_cast<float>(hookPos.x) - traits.size.cx * 0.5f;
-    y_ = static_cast<float>(hookPos.y) - traits.size.cy * 0.5f;
+    x_ = static_cast<float>(hookPos.x) - traits_.size.cx * 0.5f;
+    y_ = static_cast<float>(hookPos.y) - traits_.size.cy * 0.5f;
 }
