@@ -4,8 +4,8 @@
 #include <string>
 #include <algorithm>
 #include <cmath>
-#include <filesystem>
 #include <initializer_list>
+#include <cwchar>
 
 Game::Game()
     : hwnd_(nullptr)
@@ -32,8 +32,8 @@ Game::Game()
     , backOld_(nullptr)
 {
     keyDown_.fill(false);
-        keyPressed_.fill(false);   // 키 프레임 입력 기록 초기화
-        keyReleased_.fill(false);  // 키 프레임 해제 기록 초기화
+    keyPressed_.fill(false);
+    keyReleased_.fill(false);
     waterRect_ = { 0,0,0,0 };
     mousePos_.x = 0;
     mousePos_.y = 0;
@@ -45,10 +45,14 @@ bool Game::Initialize(HWND hwnd, int clientWidth, int clientHeight)
     width_ = clientWidth;
     height_ = clientHeight;
     UpdateWaterRect();
+    PositionPlayer();
 
-    wchar_t exePath[MAX_PATH];
+    wchar_t exePath[MAX_PATH]{};
     GetModuleFileNameW(nullptr, exePath, MAX_PATH);
-    exeDir_ = std::filesystem::path(exePath).parent_path();
+    exeDir_ = exePath;
+    size_t pos = exeDir_.find_last_of(L"\\/");
+    if (pos != std::wstring::npos)
+        exeDir_.erase(pos);
 
     auto tryLoad = [&](Sprite& dst, std::initializer_list<const wchar_t*> rels)
     {
@@ -66,7 +70,6 @@ bool Game::Initialize(HWND hwnd, int clientWidth, int clientHeight)
     tryLoad(spriteFishLarge_, { L"res/textures/fishes/fish_12.png", L"res/textures/fish_large.png" });
 
     player_.SetSprite(spritePlayer_.IsValid() ? &spritePlayer_ : nullptr);
-    player_.SetPosition(static_cast<float>(width_) * 0.5f, waterTop_ - 70.0f); // 화면 중앙, 수면 위 70px
     player_.SetSpeed(260.0f); // 플레이어 이동 속도(px/s)
 
     fishing_.SetLevels(rodLevel_, lineLevel_);
@@ -86,8 +89,27 @@ bool Game::Initialize(HWND hwnd, int clientWidth, int clientHeight)
 
 void Game::UpdateWaterRect()
 {
-    waterTop_ = static_cast<float>(height_) * 0.35f; // 화면 높이 35% 지점이 수면
-    waterBottom_ = static_cast<float>(height_) - 80.0f;       // 바닥 여유 80px
+    constexpr float kBoatBandHeight = 80.0f; // 보트가 움직일 밴드 높이
+    float baseTop = static_cast<float>(height_) * 0.35f;   // 기본 수면 높이
+    float baseBottom = static_cast<float>(height_) - kBoatBandHeight; // 기본 바닥 여유 포함
+    float waterHeight = baseBottom - baseTop;
+
+    if (worldFlipped_)
+    {
+        // 화면을 상하 반전: 수면을 하단으로 이동시키고, 보트 밴드를 맨 아래에 둔다.
+        waterBottom_ = static_cast<float>(height_) - kBoatBandHeight;
+        waterTop_ = waterBottom_ - waterHeight;
+        if (waterTop_ < 0.0f)
+        {
+            waterTop_ = 0.0f;
+        }
+    }
+    else
+    {
+        waterTop_ = baseTop;
+        waterBottom_ = baseBottom;
+    }
+
     waterRect_.left = 0;
     waterRect_.right = width_;
     waterRect_.top = static_cast<LONG>(waterTop_);
@@ -105,7 +127,7 @@ void Game::OnResize(int width, int height)
     width_ = width;
     height_ = height;
     UpdateWaterRect();
-    player_.SetPosition(player_.GetX(), waterTop_ - 70.0f);
+    PositionPlayer();
 }
 
 void Game::OnKeyDown(WPARAM key)
@@ -172,6 +194,11 @@ void Game::Update(float deltaTime)
     if (keyPressed_[VK_F12])
     {
         debugPanelOpen_ = !debugPanelOpen_;
+    }
+
+    if (keyPressed_['F'])
+    {
+        ToggleWorld();
     }
 
     if (keyPressed_['S'])
@@ -246,6 +273,25 @@ void Game::Render(HDC hdc)
     DeleteObject(waterBrush);
 
     RECT ground{ 0, static_cast<LONG>(waterBottom_), width_, height_ };
+    // 보트용 밴드(뒤집힌 상태일 때만)
+    const int boatBandHeight = 80;
+    if (worldFlipped_)
+    {
+        LONG bandBottom = waterRect_.bottom + boatBandHeight;
+        if (bandBottom > height_) bandBottom = static_cast<LONG>(height_);
+        RECT boatBand{ 0, waterRect_.bottom, width_, bandBottom };
+        ground.top = boatBand.bottom;
+
+        HBRUSH bandBrush = CreateSolidBrush(RGB(26, 46, 76)); // 짙은 푸른색 밴드
+        FillRect(target, &boatBand, bandBrush);
+        DeleteObject(bandBrush);
+    }
+    else
+    {
+        // 뒤집히지 않은 경우 ground가 수면 아래에 바로 위치
+        ground.top = static_cast<LONG>(waterBottom_);
+    }
+
     HBRUSH groundBrush = CreateSolidBrush(RGB(80, 60, 40));
     FillRect(target, &ground, groundBrush);
     DeleteObject(groundBrush);
@@ -364,32 +410,59 @@ bool Game::LoadSprite(Sprite& sprite, const wchar_t* path)
 std::wstring Game::ResourcePath(const wchar_t* relative) const
 {
     if (!relative || relative[0] == L'\0')
-    {
-        return exeDir_.wstring();
-    }
+        return exeDir_;
 
-    std::filesystem::path rel(relative);
-    if (rel.is_absolute())
-    {
-        return rel.wstring();
-    }
+    // 절대 경로면 그대로 반환.
+    if ((relative[0] == L'\\' && relative[1] == L'\\') || (wcsstr(relative, L":\\") != nullptr))
+        return relative;
 
-    std::array<std::filesystem::path, 4> candidates{
-        exeDir_ / rel,
-        exeDir_.parent_path() / rel,            // e.g. build/Debug -> build
-        exeDir_.parent_path().parent_path() / rel, // e.g. build/Debug -> project root
-        std::filesystem::current_path() / rel
+    auto exists = [](const std::wstring& path) {
+        return GetFileAttributesW(path.c_str()) != INVALID_FILE_ATTRIBUTES;
+    };
+    auto join = [](const std::wstring& base, const std::wstring& rel) {
+        if (base.empty()) return rel;
+        if (base.back() == L'\\' || base.back() == L'/')
+            return base + rel;
+        return base + L"\\" + rel;
     };
 
-    for (const auto& c : candidates)
+    std::wstring rel = relative;
+    std::wstring base = exeDir_;
+
+    // exeDir_ -> parent chains (여러 단계) -> current working dir
+    // 빌드 아웃 폴더(out/build/x64-Debug 등)에서도 res를 찾을 수 있도록
+    // 충분히 위로 올라가며 탐색한다.
+    for (int i = 0; i < 6 && !base.empty(); ++i)
     {
-        if (std::filesystem::exists(c))
+        std::wstring candidate = join(base, rel);
+        if (exists(candidate))
+            return candidate;
+
+        size_t pos = base.find_last_of(L"\\/");
+        if (pos == std::wstring::npos)
+            break;
+        base.erase(pos);
+    }
+
+    wchar_t cwd[MAX_PATH]{};
+    if (GetCurrentDirectoryW(MAX_PATH, cwd))
+    {
+        std::wstring cur = cwd;
+        for (int i = 0; i < 6 && !cur.empty(); ++i)
         {
-            return c.wstring();
+            std::wstring candidate = join(cur, rel);
+            if (exists(candidate))
+                return candidate;
+
+            size_t pos = cur.find_last_of(L"\\/");
+            if (pos == std::wstring::npos)
+                break;
+            cur.erase(pos);
         }
     }
 
-    return (exeDir_ / rel).wstring();
+    // 찾지 못하면 상대 경로 그대로 반환.
+    return std::wstring(relative);
 }
 
 void Game::CheckMilestone(float deltaGold)
@@ -412,9 +485,9 @@ void Game::CheckMilestone(float deltaGold)
 
     while (totalGold_ >= (static_cast<float>(goldMilestone_ + 1) * kMilestoneStep))
     {
+        goldMilestone_ += 1; // 다음 마일스톤 달성
         messageText_ = L"누적 획득 금액이 " + std::to_wstring(static_cast<int>(goldMilestone_ * kMilestoneStep)) +
             L"(골드)에 올라 물품 구매 가격이 상승합니다.";
-
         messageTimer_ = 3.0f; // 메시지 표시 시간(초)
     }
 }
@@ -432,6 +505,15 @@ void Game::ResetGame()
     goldMaxed_ = false;
     fishing_.SetLevels(rodLevel_, lineLevel_);
     fishManager_.Clear();
+}
+
+void Game::ToggleWorld()
+{
+    worldFlipped_ = !worldFlipped_;
+    UpdateWaterRect();
+    PositionPlayer();
+    fishManager_.Clear();
+    fishing_.SetWaterRect(waterRect_);
 }
 
 bool Game::HandleDebugClick(const POINT& pt)
@@ -491,4 +573,21 @@ void Game::LayoutDebugPanel()
     debugResetRect_ = { left + btnMargin, yBase + (btnHeight + 6) * 1, left + panelWidth - btnMargin, yBase + (btnHeight + 6) * 1 + btnHeight };
     debugRodUpRect_ = { left + btnMargin, yBase + (btnHeight + 6) * 2, left + panelWidth - btnMargin, yBase + (btnHeight + 6) * 2 + btnHeight };
     debugLineUpRect_ = { left + btnMargin, yBase + (btnHeight + 6) * 3, left + panelWidth - btnMargin, yBase + (btnHeight + 6) * 3 + btnHeight };
+}
+
+void Game::PositionPlayer()
+{
+    float x = player_.GetX();
+    if (x < 0.0f) x = 0.0f;
+    if (x > static_cast<float>(width_ - 32)) x = static_cast<float>(width_ - 32); // 단순 클램프
+
+    float y = waterTop_ - 70.0f;
+    if (worldFlipped_)
+    {
+        constexpr float kBoatHeight = 32.0f;
+        constexpr float kBoatBandHeight = 80.0f;
+        y = static_cast<float>(waterRect_.bottom) + (kBoatBandHeight - kBoatHeight - 8.0f); // 밴드 안쪽 하단 근처
+        if (y + kBoatHeight > height_) y = static_cast<float>(height_ - kBoatHeight - 2);
+    }
+    player_.SetPosition(x, y);
 }
