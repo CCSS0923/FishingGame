@@ -1,5 +1,4 @@
-// 게임 초기화부터 입력 처리, 업데이트, 렌더링까지 전체 사이클을 구현한 소스입니다.
-#include "Game.h"
+﻿#include "Game.h"
 
 #include <gdiplus.h>
 #include <string>
@@ -8,11 +7,10 @@
 #include <filesystem>
 #include <initializer_list>
 
-// 게임 상태 기본값 초기화.
 Game::Game()
     : hwnd_(nullptr)
-    , width_(1280)
-    , height_(720)
+    , width_(1280)   // 기본 해상도 가로
+    , height_(720)    // 기본 해상도 세로
     , state_(GameState::InGame)
     , score_(0)
     , goldBalance_(0.0f)
@@ -34,14 +32,13 @@ Game::Game()
     , backOld_(nullptr)
 {
     keyDown_.fill(false);
-    keyPressed_.fill(false);
-    keyReleased_.fill(false);
+        keyPressed_.fill(false);   // 키 프레임 입력 기록 초기화
+        keyReleased_.fill(false);  // 키 프레임 해제 기록 초기화
     waterRect_ = { 0,0,0,0 };
     mousePos_.x = 0;
     mousePos_.y = 0;
 }
 
-// 윈도우 핸들/크기를 받아 리소스와 객체를 초기화한다.
 bool Game::Initialize(HWND hwnd, int clientWidth, int clientHeight)
 {
     hwnd_ = hwnd;
@@ -63,15 +60,14 @@ bool Game::Initialize(HWND hwnd, int clientWidth, int clientHeight)
         return false;
     };
 
-    // 최신 자산 경로부터 시도 후 레거시 경로를 시도.
     tryLoad(spritePlayer_, { L"res/textures/boat.png", L"res/textures/player_boat.png" });
     tryLoad(spriteFishSmall_, { L"res/textures/fishes/fish_03.png", L"res/textures/fish_small.png" });
     tryLoad(spriteFishMedium_, { L"res/textures/fishes/fish_07.png", L"res/textures/fish_medium.png" });
     tryLoad(spriteFishLarge_, { L"res/textures/fishes/fish_12.png", L"res/textures/fish_large.png" });
 
     player_.SetSprite(spritePlayer_.IsValid() ? &spritePlayer_ : nullptr);
-    player_.SetPosition(static_cast<float>(width_) * 0.5f, waterTop_ - 70.0f);
-    player_.SetSpeed(260.0f);
+    player_.SetPosition(static_cast<float>(width_) * 0.5f, waterTop_ - 70.0f); // 화면 중앙, 수면 위 70px
+    player_.SetSpeed(260.0f); // 플레이어 이동 속도(px/s)
 
     fishing_.SetLevels(rodLevel_, lineLevel_);
     fishing_.SetWaterRect(waterRect_);
@@ -88,11 +84,10 @@ bool Game::Initialize(HWND hwnd, int clientWidth, int clientHeight)
     return true;
 }
 
-// 창 크기에 맞춰 수면/수역/백버퍼 등을 갱신한다.
 void Game::UpdateWaterRect()
 {
-    waterTop_ = static_cast<float>(height_) * 0.35f;
-    waterBottom_ = static_cast<float>(height_) - 80.0f;
+    waterTop_ = static_cast<float>(height_) * 0.35f; // 화면 높이 35% 지점이 수면
+    waterBottom_ = static_cast<float>(height_) - 80.0f;       // 바닥 여유 80px
     waterRect_.left = 0;
     waterRect_.right = width_;
     waterRect_.top = static_cast<LONG>(waterTop_);
@@ -105,7 +100,6 @@ void Game::UpdateWaterRect()
     EnsureBackBuffer(width_, height_);
 }
 
-// 창 크기 변경 시 수역과 플레이어 위치 재배치.
 void Game::OnResize(int width, int height)
 {
     width_ = width;
@@ -114,7 +108,6 @@ void Game::OnResize(int width, int height)
     player_.SetPosition(player_.GetX(), waterTop_ - 70.0f);
 }
 
-// 키가 눌렸을 때 상태를 기록.
 void Game::OnKeyDown(WPARAM key)
 {
     if (key < keyDown_.size())
@@ -127,7 +120,6 @@ void Game::OnKeyDown(WPARAM key)
     }
 }
 
-// 키가 떼어졌을 때 상태를 기록.
 void Game::OnKeyUp(WPARAM key)
 {
     if (key < keyDown_.size())
@@ -137,7 +129,6 @@ void Game::OnKeyUp(WPARAM key)
     }
 }
 
-// 마우스 버튼 눌림 처리: 디버그/상점 클릭을 우선 소비.
 void Game::OnMouseDown(int x, int y)
 {
     POINT pt{ x, y };
@@ -151,7 +142,7 @@ void Game::OnMouseDown(int x, int y)
         return;
     }
 
-    inputBlocked_ = false;
+        inputBlocked_ = false;     // 상점/버튼 클릭 소비 여부 초기화
     if (shop_.HandleClick(pt, goldBalance_, rodLevel_, lineLevel_))
     {
         fishing_.SetLevels(rodLevel_, lineLevel_);
@@ -159,7 +150,6 @@ void Game::OnMouseDown(int x, int y)
     }
 }
 
-// 마우스 버튼 떼기 처리.
 void Game::OnMouseUp(int x, int y)
 {
     POINT pt{ x, y };
@@ -168,19 +158,16 @@ void Game::OnMouseUp(int x, int y)
     mouseReleased_ = true;
 }
 
-// 마우스 이동 위치만 기록.
 void Game::OnMouseMove(int x, int y)
 {
     mousePos_.x = x;
     mousePos_.y = y;
 }
 
-// 입력/낚시/물고기/상점 상태를 한 프레임 갱신한다.
 void Game::Update(float deltaTime)
 {
     const bool moveLeft = keyDown_[VK_LEFT] || keyDown_['A'];
     const bool moveRight = keyDown_[VK_RIGHT] || keyDown_['D'];
-    // 마우스 입력은 별도 처리.
 
     if (keyPressed_[VK_F12])
     {
@@ -202,8 +189,8 @@ void Game::Update(float deltaTime)
     {
         auto GetScaledGold = [](int baseGold, float totalGold)
         {
-            constexpr float GOLD_SCALE = 0.0025f;
-            constexpr float GOLD_MAX_MULT = 10.0f;
+            constexpr float GOLD_SCALE = 0.0025f; // 총 골드에 따른 스케일링 계수
+            constexpr float GOLD_MAX_MULT = 10.0f;  // 최대 보상 배수
             float factor = 1.0f + totalGold * GOLD_SCALE;
             if (factor > GOLD_MAX_MULT) factor = GOLD_MAX_MULT;
             return static_cast<int>(std::round(baseGold * factor));
@@ -214,8 +201,8 @@ void Game::Update(float deltaTime)
             switch (type)
             {
             case FishType::Small: baseGold = 5; break;
-            case FishType::Medium: baseGold = 10; break;
-            case FishType::Large: baseGold = 20; break;
+            case FishType::Medium: baseGold = 10; break; // 중간 물고기 기본 골드
+            case FishType::Large: baseGold = 20; break; // 큰 물고기 기본 골드
             }
             return GetScaledGold(baseGold, totalGold_);
         };
@@ -232,14 +219,13 @@ void Game::Update(float deltaTime)
         if (messageTimer_ < 0.0f) messageTimer_ = 0.0f;
     }
 
-    keyPressed_.fill(false);   // 프레임 단위 플래그 초기화.
-    keyReleased_.fill(false);  // 프레임 단위 플래그 초기화.
-    mousePressed_ = false;     // 프레임 단위 플래그 초기화.
-    mouseReleased_ = false;    // 프레임 단위 플래그 초기화.
-    inputBlocked_ = false;     // 상점/디버그 클릭 소비 플래그 초기화.
+        keyPressed_.fill(false);   // 키 프레임 입력 기록 초기화
+        keyReleased_.fill(false);  // 키 프레임 해제 기록 초기화
+        mousePressed_ = false;     // 마우스 눌림 기록 초기화
+        mouseReleased_ = false;    // 마우스 뗌 기록 초기화
+        inputBlocked_ = false;     // 상점/버튼 클릭 소비 여부 초기화
 }
 
-// 더블 버퍼에 배경/물고기/플레이어/UI/디버그 패널을 그린다.
 void Game::Render(HDC hdc)
 {
     if (width_ <= 0 || height_ <= 0)
@@ -335,7 +321,6 @@ void Game::Render(HDC hdc)
     }
 }
 
-// 백버퍼 크기가 맞지 않으면 새로 만든다.
 void Game::EnsureBackBuffer(int width, int height)
 {
     if (backDC_ && backBmp_)
@@ -354,7 +339,6 @@ void Game::EnsureBackBuffer(int width, int height)
     ReleaseDC(hwnd_, screen);
 }
 
-// 백버퍼 리소스를 해제한다.
 void Game::DestroyBackBuffer()
 {
     if (backDC_)
@@ -372,13 +356,11 @@ void Game::DestroyBackBuffer()
     backOld_ = nullptr;
 }
 
-// 스프라이트 로드 헬퍼 함수.
 bool Game::LoadSprite(Sprite& sprite, const wchar_t* path)
 {
     return sprite.Load(path);
 }
 
-// 상대 경로를 실행 파일 기준의 실제 경로로 변환한다.
 std::wstring Game::ResourcePath(const wchar_t* relative) const
 {
     if (!relative || relative[0] == L'\0')
@@ -407,23 +389,21 @@ std::wstring Game::ResourcePath(const wchar_t* relative) const
         }
     }
 
-    // 찾지 못해도 exeDir 기준 경로를 반환.
     return (exeDir_ / rel).wstring();
 }
 
-// 누적 골드에 따른 보너스/메시지를 계산한다.
 void Game::CheckMilestone(float deltaGold)
 {
-    constexpr float kMilestoneStep = 500.0f;
-    constexpr float kGoldMax = 4000.0f;
+    constexpr float kMilestoneStep = 500.0f; // 축하 메시지 간격 골드
+    constexpr float kGoldMax = 4000.0f; // 누적 골드 최대치
     totalGold_ += deltaGold;
 
     if (!goldMaxed_ && totalGold_ >= kGoldMax)
     {
         goldMaxed_ = true;
         messageText_ = L"누적 획득 금액이 최대치(" + std::to_wstring(static_cast<int>(kGoldMax)) +
-            L")에 도달했습니다. 더 이상 생선의 판매 금액이 상승하지 않습니다.";
-        messageTimer_ = 3.0f;
+            L")에 도달했습니다. 물품 구매 금액이 더는 상승하지 않습니다.";
+        messageTimer_ = 3.0f; // 메시지 표시 시간(초)
         return;
     }
 
@@ -432,14 +412,13 @@ void Game::CheckMilestone(float deltaGold)
 
     while (totalGold_ >= (static_cast<float>(goldMilestone_ + 1) * kMilestoneStep))
     {
-        goldMilestone_ += 1;
         messageText_ = L"누적 획득 금액이 " + std::to_wstring(static_cast<int>(goldMilestone_ * kMilestoneStep)) +
-            L"이(가) 되어 생선 판매 가격이 상승했습니다.";
-        messageTimer_ = 3.0f;
+            L"(골드)에 올라 물품 구매 가격이 상승합니다.";
+
+        messageTimer_ = 3.0f; // 메시지 표시 시간(초)
     }
 }
 
-// 점수/골드/레벨 및 물고기 풀을 초기화한다.
 void Game::ResetGame()
 {
     score_ = 0;
@@ -455,7 +434,6 @@ void Game::ResetGame()
     fishManager_.Clear();
 }
 
-// 디버그 패널 영역 클릭 여부를 검사하고 동작을 실행한다.
 bool Game::HandleDebugClick(const POINT& pt)
 {
     LayoutDebugPanel();
@@ -498,16 +476,15 @@ bool Game::HandleDebugClick(const POINT& pt)
     return false;
 }
 
-// 디버그 패널과 버튼들의 위치를 계산한다.
 void Game::LayoutDebugPanel()
 {
-    const int panelWidth = 160;
-    const int panelHeight = 140;
+    const int panelWidth = 160; // 디버그 패널 폭
+    const int panelHeight = 140; // 디버그 패널 높이
     int left = 12;
     int top = height_ - panelHeight - 12;
     debugPanelRect_ = { left, top, left + panelWidth, top + panelHeight };
 
-    int btnHeight = 24;
+    int btnHeight = 24; // 디버그 버튼 높이
     int btnMargin = 6;
     int yBase = top + 22;
     debugAddGoldRect_ = { left + btnMargin, yBase, left + panelWidth - btnMargin, yBase + btnHeight };

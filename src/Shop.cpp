@@ -1,36 +1,32 @@
-// 상점 UI의 배치, 가격 계산, 구매 가능 여부 체크, 렌더링을 구현한 소스입니다.
-#include "Shop.h"
+﻿#include "Shop.h"
 
-// 상점 UI 기본값 설정.
 Shop::Shop()
     : panelRect_{ 0, 0, 0, 0 }
     , rodButton_{ 0, 0, 0, 0 }
     , lineButton_{ 0, 0, 0, 0 }
     , open_(false)
-    , width_(800)
-    , height_(600)
+    , width_(800)   // 기본 창 폭
+    , height_(600)  // 기본 창 높이
 {
 }
 
-// 창 크기에 맞춰 패널/버튼 위치 재배치.
 void Shop::SetClientSize(int width, int height)
 {
     width_ = width;
     height_ = height;
 
-    const int panelWidth = 260;
-    const int panelHeight = 200;
-    const int margin = 20;
+    const int panelWidth = 260; // 상점 패널 폭
+    const int panelHeight = 200; // 상점 패널 높이
+    const int margin = 20; // 패널 여백
     panelRect_.right = width_ - margin;
     panelRect_.left = panelRect_.right - panelWidth;
     panelRect_.top = height_ - panelHeight - margin;
     panelRect_.bottom = height_ - margin;
 
-    rodButton_ = { panelRect_.left + 16, panelRect_.top + 48, panelRect_.right - 16, panelRect_.top + 48 + 48 };
-    lineButton_ = { panelRect_.left + 16, panelRect_.top + 110, panelRect_.right - 16, panelRect_.top + 110 + 48 };
+    rodButton_ = { panelRect_.left + 16, panelRect_.top + 48, panelRect_.right - 16, panelRect_.top + 48 + 48 }; // 로드 업그레이드 버튼 영역
+    lineButton_ = { panelRect_.left + 16, panelRect_.top + 110, panelRect_.right - 16, panelRect_.top + 110 + 48 }; // 라인 업그레이드 버튼 영역
 }
 
-// 상점 열기/닫기 전환.
 void Shop::Toggle()
 {
     open_ = !open_;
@@ -38,15 +34,14 @@ void Shop::Toggle()
 
 namespace
 {
-    constexpr int kMaxLevel = 10;
-    constexpr int ROD_COST_BASE = 20;
-    constexpr int LINE_COST_BASE = 15;
+    constexpr int kMaxLevel = 10;   // 업그레이드 최대 레벨
+    constexpr int ROD_COST_BASE = 20; // 로드 기본 가격
+    constexpr int LINE_COST_BASE = 15; // 라인 기본 가격
 
-    int GetRodUpgradeCost(int level) { return ROD_COST_BASE * level * level; }   // 로드 업그레이드 비용.
-    int GetLineUpgradeCost(int level) { return LINE_COST_BASE * level * level; } // 라인 업그레이드 비용.
+    int GetRodUpgradeCost(int level) { return ROD_COST_BASE * level * level; }   // 로드 업그레이드 비용
+    int GetLineUpgradeCost(int level) { return LINE_COST_BASE * level * level; } // 라인 업그레이드 비용
 }
 
-// 클릭 위치가 상점 버튼에 닿았을 경우 구매를 처리한다.
 bool Shop::HandleClick(POINT pt, float& money, int& rodLevel, int& lineLevel)
 {
     if (!open_)
@@ -77,7 +72,6 @@ bool Shop::HandleClick(POINT pt, float& money, int& rodLevel, int& lineLevel)
     return false;
 }
 
-// 상점이 열려 있을 때 패널과 버튼을 그린다.
 void Shop::Render(HDC hdc, float money, int rodLevel, int lineLevel) const
 {
     if (!open_)

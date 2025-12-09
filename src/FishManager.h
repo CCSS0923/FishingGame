@@ -19,7 +19,7 @@ public:
     // 모든 물고기 제거.
     void Clear();
 
-    // 물고기 생성 및 이동/제거 갱신.
+    // 물고기 생성/이동/제거 갱신.
     void Update(float deltaTime);
     // 가시 영역에 있는 물고기 렌더링.
     void Render(HDC hdc) const;
@@ -41,5 +41,4 @@ private:
     Sprite* smallSprite_;    // 소형 스프라이트.
     Sprite* mediumSprite_;   // 중형 스프라이트.
     Sprite* largeSprite_;    // 대형 스프라이트.
-
 };

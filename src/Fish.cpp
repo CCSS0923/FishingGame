@@ -10,12 +10,30 @@ FishTraits GetTraits(FishType type)
     switch (type)
     {
     case FishType::Small:
-        return { 5, 5, 80.0f, 0.15f, {64, 32} };
+        return {
+            5,            // score: 작은 물고기 점수
+            5,            // money: 작은 물고기 보상 골드
+            80.0f,        // speed: 초당 이동 속도(px/s)
+            0.15f,        // tensionAdd: 초당 라인 긴장도 증가치
+            { 64, 32 }    // size: 렌더링 크기(px)
+        };
     case FishType::Medium:
-        return { 12, 10, 65.0f, 0.25f, {96, 48} };
+        return {
+            12,           // score: 중간 물고기 점수
+            10,           // money: 중간 물고기 보상 골드
+            65.0f,        // speed: 초당 이동 속도(px/s)
+            0.25f,        // tensionAdd: 초당 라인 긴장도 증가치
+            { 96, 48 }    // size: 렌더링 크기(px)
+        };
     case FishType::Large:
     default:
-        return { 25, 20, 50.0f, 0.35f, {128, 64} };
+        return {
+            25,           // score: 큰 물고기 점수
+            20,           // money: 큰 물고기 보상 골드
+            50.0f,        // speed: 초당 이동 속도(px/s)
+            0.35f,        // tensionAdd: 초당 라인 긴장도 증가치
+            { 128, 64 }   // size: 렌더링 크기(px)
+        };
     }
 }
 

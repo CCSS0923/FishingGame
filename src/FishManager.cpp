@@ -1,13 +1,12 @@
-// 물고기 스폰과 전체 업데이트/렌더링, 충돌 처리 등을 총괄하는 매니저 구현입니다.
+// 물고기 스폰, 이동/제거 업데이트, 렌더링과 충돌 검사를 관리하는 매니저 구현입니다.
 #include "FishManager.h"
 
 #include <algorithm>
 
-// 물고기 풀 초기화.
 FishManager::FishManager()
     : waterRect_{ 0, 0, 0, 0 }
-    , spawnTimer_(0.0f)
-    , spawnInterval_(2.0f)
+    , spawnTimer_(0.0f)     // 스폰까지 남은 시간
+    , spawnInterval_(2.0f)  // 기본 스폰 주기(초)
     , rng_(static_cast<unsigned int>(std::random_device{}()))
     , smallSprite_(nullptr)
     , mediumSprite_(nullptr)
@@ -15,7 +14,7 @@ FishManager::FishManager()
 {
 }
 
-// 각 크기별 스프라이트를 세팅.
+// 각 크기별 물고기 스프라이트 연결.
 void FishManager::SetSprites(Sprite* smallSprite, Sprite* mediumSprite, Sprite* largeSprite)
 {
     smallSprite_ = smallSprite;
@@ -23,19 +22,19 @@ void FishManager::SetSprites(Sprite* smallSprite, Sprite* mediumSprite, Sprite* 
     largeSprite_ = largeSprite;
 }
 
-// 물 영역 갱신.
+// 물 영역 설정.
 void FishManager::SetWaterRect(const RECT& rect)
 {
     waterRect_ = rect;
 }
 
-// 모든 물고기를 제거.
+// 모든 물고기 제거.
 void FishManager::Clear()
 {
     fishes_.clear();
 }
 
-// 무작위 물고기를 하나 생성하고 목록에 추가.
+// 무작위 물고기 한 마리를 생성해 등록.
 Fish* FishManager::Spawn()
 {
     Fish fish = Fish::SpawnRandom(waterRect_, rng_);
@@ -55,25 +54,25 @@ Fish* FishManager::Spawn()
     return &fishes_.back();
 }
 
-// 스폰 타이머/물고기 이동을 처리하고 벗어난 물고기를 제거한다.
+// 스폰 타이머/물고기 이동/제거를 갱신한다.
 void FishManager::Update(float deltaTime)
 {
     spawnTimer_ -= deltaTime;
     if (spawnTimer_ <= 0.0f)
     {
         Spawn();
-        spawnInterval_ = 1.5f + static_cast<float>((rng_() % 150) / 100.0f);
+        spawnInterval_ = 1.5f + static_cast<float>((rng_() % 150) / 100.0f); // 1.5~3.0초 랜덤 스폰
         spawnTimer_ = spawnInterval_;
     }
 
     RECT bounds = waterRect_;
-    bounds.left -= 20;
-    bounds.right += 20;
+    bounds.left -= 20;   // 화면 밖 여유 영역
+    bounds.right += 20;  // 화면 밖 여유 영역
 
     for (auto& fish : fishes_)
     {
         fish.Update(deltaTime, bounds);
-        // 확장 영역을 완전히 벗어나면 즉시 제거 플래그.
+        // 수면 밖으로 지나친 물고기는 바로 제거.
         FishTraits t = GetTraits(fish.GetType());
         RECT r = fish.GetRect();
         if (r.right < bounds.left - t.size.cx || r.left > bounds.right + t.size.cx)
@@ -85,12 +84,12 @@ void FishManager::Update(float deltaTime)
     fishes_.remove_if([](const Fish& f) { return !f.IsAlive(); });
 }
 
-// 물 영역 근처의 물고기만 렌더링.
+// 화면 근처에 있는 물고기만 렌더링.
 void FishManager::Render(HDC hdc) const
 {
-    // 단순 컬링: 물 영역 + 여백을 벗어난 물고기는 스킵.
+    // 간단 컬링: 물 영역 + 여백을 벗어나면 스킵.
     RECT view = waterRect_;
-    InflateRect(&view, 32, 32);
+    InflateRect(&view, 32, 32); // 광역 체크 박스 확장
     for (const auto& fish : fishes_)
     {
         RECT r = fish.GetRect();
@@ -101,7 +100,7 @@ void FishManager::Render(HDC hdc) const
     }
 }
 
-// 바늘 영역과 겹치는 살아있는 물고기를 찾는다.
+// 바늘 충돌 박스와 겹치는 살아있는 물고기 포인터 반환.
 Fish* FishManager::CheckHookCollision(const RECT& hookRect)
 {
     RECT overlap{};

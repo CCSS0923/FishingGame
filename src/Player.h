@@ -15,7 +15,7 @@ public:
     void SetSpeed(float speed);
     void SetSprite(Sprite* sprite) { sprite_ = sprite; }
 
-    // 입력과 델타 시간에 따라 이동 처리.
+    // 입력 플래그와 델타 시간으로 수평 이동 처리.
     void Update(bool moveLeft, bool moveRight, float deltaTime, int windowWidth);
     // 보트 스프라이트/대체 도형 렌더링.
     void Render(HDC hdc) const;
