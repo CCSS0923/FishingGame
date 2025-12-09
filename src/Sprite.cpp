@@ -1,5 +1,7 @@
+// GDI+로 스프라이트를 로드하고 그리기 및 좌우 반전 기능을 제공하는 구현입니다.
 #include "Sprite.h"
 
+// 주어진 경로에서 GDI+ 이미지를 로드한다.
 bool Sprite::Load(const std::wstring& path)
 {
     image_ = std::make_unique<Gdiplus::Image>(path.c_str());
@@ -11,6 +13,7 @@ bool Sprite::Load(const std::wstring& path)
     return true;
 }
 
+// 지정한 크기/위치에 스프라이트를 그린다.
 void Sprite::Draw(HDC hdc, int x, int y, int width, int height) const
 {
     if (!image_)
@@ -26,6 +29,7 @@ void Sprite::Draw(HDC hdc, int x, int y, int width, int height) const
         static_cast<Gdiplus::REAL>(dw), static_cast<Gdiplus::REAL>(dh));
 }
 
+// 좌우 반전하여 스프라이트를 그린다.
 void Sprite::DrawFlippedH(HDC hdc, int x, int y, int width, int height) const
 {
     if (!image_)
@@ -46,11 +50,13 @@ void Sprite::DrawFlippedH(HDC hdc, int x, int y, int width, int height) const
     g.ResetTransform();
 }
 
+// 원본 이미지 너비 반환.
 UINT Sprite::GetWidth() const
 {
     return image_ ? image_->GetWidth() : 0;
 }
 
+// 원본 이미지 높이 반환.
 UINT Sprite::GetHeight() const
 {
     return image_ ? image_->GetHeight() : 0;

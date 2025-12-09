@@ -1,3 +1,4 @@
+// 낚시 시스템의 상태 전환과 캐스팅/릴링 흐름을 모두 담당하는 핵심 게임플레이 구현입니다.
 #include "FishingSystem.h"
 
 #include <algorithm>
@@ -5,9 +6,10 @@
 
 namespace
 {
-    constexpr float kPi = 3.1415926535f;
+    constexpr float kPi = 3.1415926535f; // 라디안/각도 변환에 사용.
 }
 
+// 낚시 상태 초기화.
 FishingSystem::FishingSystem()
     : state_(FishingState::Idle)
     , castPower_(0.0f)
@@ -31,12 +33,14 @@ FishingSystem::FishingSystem()
 {
 }
 
+// 낚시 가능한 물 영역을 설정하고 파라미터를 다시 계산한다.
 void FishingSystem::SetWaterRect(const RECT& rect)
 {
     waterRect_ = rect;
     RecalculateStats();
 }
 
+// 장비 레벨을 설정하고 관련 스탯을 갱신한다.
 void FishingSystem::SetLevels(int rodLevel, int lineLevel)
 {
     rodLevel_ = rodLevel;
@@ -44,11 +48,12 @@ void FishingSystem::SetLevels(int rodLevel, int lineLevel)
     RecalculateStats();
 }
 
+// 현재 물 높이와 장비 레벨에 맞춰 낚시 스탯을 계산.
 void FishingSystem::RecalculateStats()
 {
     float waterHeight = static_cast<float>(waterRect_.bottom - waterRect_.top);
 
-    // Clamp levels to max for safety.
+    // 안전을 위해 최대 레벨로 클램프.
     rodLevel_ = std::clamp(rodLevel_, 1, kMaxLevel);
     lineLevel_ = std::clamp(lineLevel_, 1, kMaxLevel);
 
@@ -58,24 +63,26 @@ void FishingSystem::RecalculateStats()
         return std::clamp(t, 0.0f, 1.0f);
     };
 
-    // Rod: max depth fraction from 10% at Lv1 to 100% at Lv10.
+    // 로드: LV1에서 수심 10%까지, LV10에서 수심 100%까지 도달.
     float rodT = levelFactor(rodLevel_);
     float depthFraction = lerp(0.10f, 1.0f, rodT);
     castPowerMax_ = waterHeight * depthFraction;
 
-    // Line: charge speed and reel speed scale linearly; Lv1 intentionally slow.
+    // 라인: 충전/릴 속도가 선형 증가하며, LV1은 느리게 설계.
     float lineT = levelFactor(lineLevel_);
     chargeRate_ = lerp(50.0f, 300.0f, lineT);   // Casting power charge speed.
     reelSpeed_ = lerp(90.0f, 380.0f, lineT);    // Reeling speed.
     lineTensionDecay_ = lerp(0.15f, 0.45f, lineT); // Faster relaxation with better line.
 }
 
+// 캐스팅 충전을 시작.
 void FishingSystem::StartCharge()
 {
     state_ = FishingState::Charging;
     castPower_ = 0.0f;
 }
 
+// 현재 각도/파워로 캐스팅을 수행한다.
 void FishingSystem::Cast(const Player& player)
 {
     state_ = FishingState::Casting;
@@ -97,6 +104,7 @@ void FishingSystem::Cast(const Player& player)
     state_ = FishingState::Floating;
 }
 
+// 릴 당기기 상태로 전환한다.
 void FishingSystem::StartReel()
 {
     if (state_ == FishingState::Floating || state_ == FishingState::Bite)
@@ -105,6 +113,7 @@ void FishingSystem::StartReel()
     }
 }
 
+// 라인/바늘/상태를 초기 위치로 되돌린다.
 void FishingSystem::ResetLine(const Player& player)
 {
     state_ = FishingState::Idle;
@@ -121,6 +130,7 @@ void FishingSystem::ResetLine(const Player& player)
     caughtTimer_ = 0.0f;
 }
 
+// 바늘 충돌 영역을 계산한다.
 RECT FishingSystem::GetHookRect() const
 {
     const int size = 24;
@@ -132,6 +142,7 @@ RECT FishingSystem::GetHookRect() const
     return r;
 }
 
+// pendingCatch_가 있을 경우 이를 outResult로 전달하고 초기화.
 bool FishingSystem::ConsumeCatch(CatchResult& outResult)
 {
     if (!pendingCatch_.caught)
@@ -142,6 +153,7 @@ bool FishingSystem::ConsumeCatch(CatchResult& outResult)
     return true;
 }
 
+// 입력/플레이어/물고기 상태를 반영해 낚시 단계를 갱신한다.
 void FishingSystem::Update(float deltaTime, const Player& player, FishManager& fishManager,
     const POINT& mousePos, bool mouseDown, bool mousePressed, bool mouseReleased, bool inputBlocked)
 {
@@ -175,24 +187,24 @@ void FishingSystem::Update(float deltaTime, const Player& player, FishManager& f
         }
         break;
     case FishingState::Charging:
-        // Angle toward mouse each frame while charging.
+        // 충전 중에는 매 프레임 마우스 방향으로 각도 갱신.
         castAngleDeg_ = aimAngleDeg;
 
-        // Charge toward target based on hold time, capped by aim distance.
+        // 조준 거리와 최대 파워를 고려해 캐스팅 힘을 축적.
         {
             float targetPower = std::min(aimDistance, castPowerMax_);
             castPower_ = std::min(targetPower, castPower_ + chargeRate_ * deltaTime);
 
             if (!mouseDown || mouseReleased)
             {
-                // On release, cast using current aim angle and clamped power.
+                // 버튼을 떼면 현재 각도/파워로 던진다.
                 castPower_ = std::min(castPower_, targetPower);
                 Cast(player);
             }
         }
         break;
     case FishingState::Casting:
-        // Casting transition is immediate in this simplified model.
+        // 단순 모델이므로 곧바로 떠 있는 상태로 전환.
         state_ = FishingState::Floating;
         break;
     case FishingState::Floating:
@@ -226,7 +238,7 @@ void FishingSystem::Update(float deltaTime, const Player& player, FishManager& f
         float dy = static_cast<float>(reelOrigin.y) - hookPos_.y;
         float dist = std::sqrt(dx * dx + dy * dy);
 
-        // Snap-to-origin tolerance so we never stall near the boat.
+        // 배 주변에서 멈추지 않도록 목표 위치 근처 허용 오차.
         const float catchThreshold = 28.0f;
 
         if (dist > 1.0f)
@@ -270,7 +282,7 @@ void FishingSystem::Update(float deltaTime, const Player& player, FishManager& f
             }
         }
 
-        // If the hooked fish is close enough to the boat, auto-complete the catch.
+        // 물고기가 충분히 가까우면 즉시 잡은 것으로 처리.
         if (hookedFish_ && dist <= catchThreshold)
         {
             hookPos_.x = static_cast<float>(origin.x);
@@ -329,7 +341,7 @@ void FishingSystem::Update(float deltaTime, const Player& player, FishManager& f
         break;
     }
 
-    // Passive line relaxation when idle-ish.
+    // 대기 중에는 장력이 서서히 감소하며, 바늘이 닿으면 즉시 릴 상태로 전환.
     if (state_ == FishingState::Floating || state_ == FishingState::Bite)
     {
         lineTension_ = std::max(0.0f, lineTension_ - lineTensionDecay_ * deltaTime);
@@ -347,6 +359,7 @@ void FishingSystem::Update(float deltaTime, const Player& player, FishManager& f
     }
 }
 
+// 낚싯줄과 찌, 바늘을 현재 상태에 맞게 그린다.
 void FishingSystem::Render(HDC hdc, const Player& player) const
 {
     POINT origin = player.GetLineOrigin();

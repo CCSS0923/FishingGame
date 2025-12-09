@@ -1,3 +1,4 @@
+// 게임 초기화부터 입력 처리, 업데이트, 렌더링까지 전체 사이클을 구현한 소스입니다.
 #include "Game.h"
 
 #include <gdiplus.h>
@@ -7,6 +8,7 @@
 #include <filesystem>
 #include <initializer_list>
 
+// 게임 상태 기본값 초기화.
 Game::Game()
     : hwnd_(nullptr)
     , width_(1280)
@@ -39,6 +41,7 @@ Game::Game()
     mousePos_.y = 0;
 }
 
+// 윈도우 핸들/크기를 받아 리소스와 객체를 초기화한다.
 bool Game::Initialize(HWND hwnd, int clientWidth, int clientHeight)
 {
     hwnd_ = hwnd;
@@ -60,7 +63,7 @@ bool Game::Initialize(HWND hwnd, int clientWidth, int clientHeight)
         return false;
     };
 
-    // Try current asset names first, then legacy names.
+    // 최신 자산 경로부터 시도 후 레거시 경로를 시도.
     tryLoad(spritePlayer_, { L"res/textures/boat.png", L"res/textures/player_boat.png" });
     tryLoad(spriteFishSmall_, { L"res/textures/fishes/fish_03.png", L"res/textures/fish_small.png" });
     tryLoad(spriteFishMedium_, { L"res/textures/fishes/fish_07.png", L"res/textures/fish_medium.png" });
@@ -85,6 +88,7 @@ bool Game::Initialize(HWND hwnd, int clientWidth, int clientHeight)
     return true;
 }
 
+// 창 크기에 맞춰 수면/수역/백버퍼 등을 갱신한다.
 void Game::UpdateWaterRect()
 {
     waterTop_ = static_cast<float>(height_) * 0.35f;
@@ -101,6 +105,7 @@ void Game::UpdateWaterRect()
     EnsureBackBuffer(width_, height_);
 }
 
+// 창 크기 변경 시 수역과 플레이어 위치 재배치.
 void Game::OnResize(int width, int height)
 {
     width_ = width;
@@ -109,6 +114,7 @@ void Game::OnResize(int width, int height)
     player_.SetPosition(player_.GetX(), waterTop_ - 70.0f);
 }
 
+// 키가 눌렸을 때 상태를 기록.
 void Game::OnKeyDown(WPARAM key)
 {
     if (key < keyDown_.size())
@@ -121,6 +127,7 @@ void Game::OnKeyDown(WPARAM key)
     }
 }
 
+// 키가 떼어졌을 때 상태를 기록.
 void Game::OnKeyUp(WPARAM key)
 {
     if (key < keyDown_.size())
@@ -130,6 +137,7 @@ void Game::OnKeyUp(WPARAM key)
     }
 }
 
+// 마우스 버튼 눌림 처리: 디버그/상점 클릭을 우선 소비.
 void Game::OnMouseDown(int x, int y)
 {
     POINT pt{ x, y };
@@ -151,6 +159,7 @@ void Game::OnMouseDown(int x, int y)
     }
 }
 
+// 마우스 버튼 떼기 처리.
 void Game::OnMouseUp(int x, int y)
 {
     POINT pt{ x, y };
@@ -159,17 +168,19 @@ void Game::OnMouseUp(int x, int y)
     mouseReleased_ = true;
 }
 
+// 마우스 이동 위치만 기록.
 void Game::OnMouseMove(int x, int y)
 {
     mousePos_.x = x;
     mousePos_.y = y;
 }
 
+// 입력/낚시/물고기/상점 상태를 한 프레임 갱신한다.
 void Game::Update(float deltaTime)
 {
     const bool moveLeft = keyDown_[VK_LEFT] || keyDown_['A'];
     const bool moveRight = keyDown_[VK_RIGHT] || keyDown_['D'];
-    // Mouse handled separately
+    // 마우스 입력은 별도 처리.
 
     if (keyPressed_[VK_F12])
     {
@@ -221,13 +232,14 @@ void Game::Update(float deltaTime)
         if (messageTimer_ < 0.0f) messageTimer_ = 0.0f;
     }
 
-    keyPressed_.fill(false);
-    keyReleased_.fill(false);
-    mousePressed_ = false;
-    mouseReleased_ = false;
-    inputBlocked_ = false;
+    keyPressed_.fill(false);   // 프레임 단위 플래그 초기화.
+    keyReleased_.fill(false);  // 프레임 단위 플래그 초기화.
+    mousePressed_ = false;     // 프레임 단위 플래그 초기화.
+    mouseReleased_ = false;    // 프레임 단위 플래그 초기화.
+    inputBlocked_ = false;     // 상점/디버그 클릭 소비 플래그 초기화.
 }
 
+// 더블 버퍼에 배경/물고기/플레이어/UI/디버그 패널을 그린다.
 void Game::Render(HDC hdc)
 {
     if (width_ <= 0 || height_ <= 0)
@@ -323,6 +335,7 @@ void Game::Render(HDC hdc)
     }
 }
 
+// 백버퍼 크기가 맞지 않으면 새로 만든다.
 void Game::EnsureBackBuffer(int width, int height)
 {
     if (backDC_ && backBmp_)
@@ -341,6 +354,7 @@ void Game::EnsureBackBuffer(int width, int height)
     ReleaseDC(hwnd_, screen);
 }
 
+// 백버퍼 리소스를 해제한다.
 void Game::DestroyBackBuffer()
 {
     if (backDC_)
@@ -358,11 +372,13 @@ void Game::DestroyBackBuffer()
     backOld_ = nullptr;
 }
 
+// 스프라이트 로드 헬퍼 함수.
 bool Game::LoadSprite(Sprite& sprite, const wchar_t* path)
 {
     return sprite.Load(path);
 }
 
+// 상대 경로를 실행 파일 기준의 실제 경로로 변환한다.
 std::wstring Game::ResourcePath(const wchar_t* relative) const
 {
     if (!relative || relative[0] == L'\0')
@@ -391,10 +407,11 @@ std::wstring Game::ResourcePath(const wchar_t* relative) const
         }
     }
 
-    // fall back to exeDir/relative even if missing
+    // 찾지 못해도 exeDir 기준 경로를 반환.
     return (exeDir_ / rel).wstring();
 }
 
+// 누적 골드에 따른 보너스/메시지를 계산한다.
 void Game::CheckMilestone(float deltaGold)
 {
     constexpr float kMilestoneStep = 500.0f;
@@ -422,6 +439,7 @@ void Game::CheckMilestone(float deltaGold)
     }
 }
 
+// 점수/골드/레벨 및 물고기 풀을 초기화한다.
 void Game::ResetGame()
 {
     score_ = 0;
@@ -437,6 +455,7 @@ void Game::ResetGame()
     fishManager_.Clear();
 }
 
+// 디버그 패널 영역 클릭 여부를 검사하고 동작을 실행한다.
 bool Game::HandleDebugClick(const POINT& pt)
 {
     LayoutDebugPanel();
@@ -479,6 +498,7 @@ bool Game::HandleDebugClick(const POINT& pt)
     return false;
 }
 
+// 디버그 패널과 버튼들의 위치를 계산한다.
 void Game::LayoutDebugPanel()
 {
     const int panelWidth = 160;

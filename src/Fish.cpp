@@ -1,8 +1,10 @@
+// 물고기 이동, 스폰, 렌더링 로직을 구현한 소스입니다.
 #include "Fish.h"
 
 #include <algorithm>
 #include <cmath>
 
+// 물고기 종류에 맞는 능력치를 돌려준다.
 FishTraits GetTraits(FishType type)
 {
     switch (type)
@@ -17,6 +19,7 @@ FishTraits GetTraits(FishType type)
     }
 }
 
+// 기본 상태의 물고기 생성.
 Fish::Fish()
     : x_(0.0f)
     , y_(0.0f)
@@ -28,11 +31,12 @@ Fish::Fish()
 {
 }
 
+// 수역 영역을 기준으로 랜덤한 위치/종류의 물고기를 만든다.
 Fish Fish::SpawnRandom(const RECT& waterRect, std::mt19937& rng)
 {
     std::uniform_real_distribution<float> sideDist(0.0f, 1.0f);
     std::uniform_real_distribution<float> typeDist(0.0f, 1.0f);
-    // Allow spawns very close to the water surface so Rod Lv1 (shallow cast) can reach.
+    // 로드 LV1도 닿을 수 있도록 수면 가까이서도 스폰 허용.
     float spawnTop = static_cast<float>(waterRect.top) + 4.0f;
     float spawnBottom = static_cast<float>(waterRect.bottom) - 40.0f;
     if (spawnBottom < spawnTop) spawnBottom = spawnTop + 8.0f;
@@ -57,6 +61,7 @@ Fish Fish::SpawnRandom(const RECT& waterRect, std::mt19937& rng)
     return fish;
 }
 
+// 이동 및 생존 여부 갱신.
 void Fish::Update(float deltaTime, const RECT& bounds)
 {
     if (!alive_)
@@ -77,6 +82,7 @@ void Fish::Update(float deltaTime, const RECT& bounds)
     }
 }
 
+// 살아 있는 경우 화면에 물고기를 그린다.
 void Fish::Render(HDC hdc) const
 {
     if (!alive_)
@@ -118,7 +124,7 @@ void Fish::Render(HDC hdc) const
         return;
     }
 
-    // Legacy simple rectangle fallback
+    // 스프라이트가 없을 때의 단순 사각형 대체 렌더.
     HBRUSH bodyBrush = CreateSolidBrush(fillColor);
     HPEN bodyPen = CreatePen(PS_SOLID, 2, RGB(240, 240, 240));
     HGDIOBJ oldBrush = SelectObject(hdc, bodyBrush);
@@ -132,7 +138,7 @@ void Fish::Render(HDC hdc) const
 
 RECT Fish::GetRect() const
 {
-    const int margin = 2; // include outline thickness
+    const int margin = 2; // 외곽선까지 포함하도록 여유를 둔다.
     RECT r{};
     r.left = static_cast<LONG>(x_) - margin;
     r.top = static_cast<LONG>(y_) - margin;

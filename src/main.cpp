@@ -1,3 +1,4 @@
+// Win32 진입점으로 창 생성, 메시지 루프, GDI+ 초기화와 게임 실행을 담당합니다.
 #include <windows.h>
 #include <windowsx.h>
 #include <gdiplus.h>
@@ -9,8 +10,9 @@
 
 namespace
 {
-    Game g_game;
+    Game g_game; // 전역 게임 인스턴스.
 
+    // 윈도우 메시지 처리 함수: 입력/리사이즈/페인트를 게임으로 전달.
     LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         switch (msg)
@@ -51,6 +53,7 @@ namespace
         }
     }
 
+    // 기본 윈도우를 생성한다.
     HWND CreateMainWindow(HINSTANCE hInstance, int width, int height)
     {
         WNDCLASSEX wc{};
@@ -91,6 +94,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_ LPWSTR    lpCmdLine,
     _In_ int       nCmdShow)
 {
+    // GDI+ 초기화 및 윈도우/게임 루프 준비.
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
