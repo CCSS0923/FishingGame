@@ -1,8 +1,8 @@
-// Win32 리소스(아이콘, 커서, 버전 정보) ID를 정의하는 헤더입니다.
+﻿// Win32 由ъ냼???꾩씠肄? 而ㅼ꽌, 踰꾩쟾 ?뺣낫) ID瑜??뺤쓽?섎뒗 ?ㅻ뜑?낅땲??
 #pragma once
 
-#define IDI_APP_ICON 101   // 메인 아이콘 리소스 ID.
-#define IDC_APP_CURSOR 201 // 커서 리소스 ID.
-#define IDI_SMALL_ICON 301 // 작은 아이콘 리소스 ID.
+#define IDI_APP_ICON 101   // 硫붿씤 ?꾩씠肄?由ъ냼??ID.
+#define IDC_APP_CURSOR 201 // 而ㅼ꽌 由ъ냼??ID.
+#define IDI_SMALL_ICON 301 // ?묒? ?꾩씠肄?由ъ냼??ID.
 
-#define IDR_VERSION 400    // 버전 리소스 ID.
+#define IDR_VERSION 400    // 踰꾩쟾 由ъ냼??ID.

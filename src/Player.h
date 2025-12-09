@@ -1,4 +1,4 @@
-// 플레이어 입력 처리와 이동, 발사 위치 제공 등을 담당하는 플레이어 객체 헤더입니다.
+﻿// ?뚮젅?댁뼱 ?낅젰 泥섎━? ?대룞, 諛쒖궗 ?꾩튂 ?쒓났 ?깆쓣 ?대떦?섎뒗 ?뚮젅?댁뼱 媛앹껜 ?ㅻ뜑?낅땲??
 #pragma once
 
 #include <windows.h>
@@ -7,32 +7,32 @@
 class Player
 {
 public:
-    Player(); // 플레이어 보트 초기화.
+    Player(); // ?뚮젅?댁뼱 蹂댄듃 珥덇린??
 
-    // 화면 상 위치 지정.
+    // ?붾㈃ ???꾩튂 吏??
     void SetPosition(float x, float y);
-    // 이동 속도 설정.
+    // ?대룞 ?띾룄 ?ㅼ젙.
     void SetSpeed(float speed);
     void SetSprite(Sprite* sprite) { sprite_ = sprite; }
 
-    // 입력 플래그와 델타 시간으로 수평 이동 처리.
+    // ?낅젰 ?뚮옒洹몄? ?명? ?쒓컙?쇰줈 ?섑룊 ?대룞 泥섎━.
     void Update(bool moveLeft, bool moveRight, float deltaTime, int windowWidth);
-    // 보트 스프라이트/대체 도형 렌더링.
+    // 蹂댄듃 ?ㅽ봽?쇱씠???泥??꾪삎 ?뚮뜑留?
     void Render(HDC hdc) const;
 
-    // 충돌/그리기에 쓰이는 사각형 반환.
+    // 異⑸룎/洹몃━湲곗뿉 ?곗씠???ш컖??諛섑솚.
     RECT GetHitRect() const;
-    // 낚싯줄이 나가는 기준점을 반환.
+    // ?싳떙以꾩씠 ?섍???湲곗??먯쓣 諛섑솚.
     POINT GetLineOrigin() const;
 
     float GetX() const { return x_; }
     float GetY() const { return y_; }
 
 private:
-    float x_;   // 보트의 좌상단 X 좌표.
-    float y_;   // 보트의 좌상단 Y 좌표.
-    float speed_; // 초당 이동 속도.
-    static constexpr int kWidth = 80;  // 보트 너비.
-    static constexpr int kHeight = 32; // 보트 높이.
-    Sprite* sprite_; // 보트 스프라이트 포인터.
+    float x_;   // 蹂댄듃??醫뚯긽??X 醫뚰몴.
+    float y_;   // 蹂댄듃??醫뚯긽??Y 醫뚰몴.
+    float speed_; // 珥덈떦 ?대룞 ?띾룄.
+    static constexpr int kWidth = 80;  // 蹂댄듃 ?덈퉬.
+    static constexpr int kHeight = 32; // 蹂댄듃 ?믪씠.
+    Sprite* sprite_; // 蹂댄듃 ?ㅽ봽?쇱씠???ъ씤??
 };

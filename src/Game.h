@@ -1,4 +1,4 @@
-// 게임 루프와 자원 로딩, 입력/업데이트/렌더링 흐름을 총괄하는 상위 게임 인터페이스입니다.
+﻿// 寃뚯엫 猷⑦봽? ?먯썝 濡쒕뵫, ?낅젰/?낅뜲?댄듃/?뚮뜑留??먮쫫??珥앷큵?섎뒗 ?곸쐞 寃뚯엫 ?명꽣?섏씠?ㅼ엯?덈떎.
 #pragma once
 
 #include <array>
@@ -15,80 +15,80 @@
 class Game
 {
 public:
-    Game(); // 게임 전체 상태 초기화.
+    Game(); // 寃뚯엫 ?꾩껜 ?곹깭 珥덇린??
 
-    bool Initialize(HWND hwnd, int clientWidth, int clientHeight); // 윈도우 핸들과 크기를 받아 리소스 초기화.
-    void OnResize(int width, int height);                         // 창 크기 변경 시 호출.
+    bool Initialize(HWND hwnd, int clientWidth, int clientHeight); // ?덈룄???몃뱾怨??ш린瑜?諛쏆븘 由ъ냼??珥덇린??
+    void OnResize(int width, int height);                         // 李??ш린 蹂寃????몄텧.
 
-    void OnKeyDown(WPARAM key); // 키 다운 이벤트 기록.
-    void OnKeyUp(WPARAM key);   // 키 업 이벤트 기록.
-    void OnMouseDown(int x, int y); // 마우스 버튼 눌림 처리.
-    void OnMouseUp(int x, int y);   // 마우스 버튼 뗌 처리.
-    void OnMouseMove(int x, int y); // 마우스 이동 기록.
+    void OnKeyDown(WPARAM key); // ???ㅼ슫 ?대깽??湲곕줉.
+    void OnKeyUp(WPARAM key);   // ?????대깽??湲곕줉.
+    void OnMouseDown(int x, int y); // 留덉슦??踰꾪듉 ?뚮┝ 泥섎━.
+    void OnMouseUp(int x, int y);   // 留덉슦??踰꾪듉 ??泥섎━.
+    void OnMouseMove(int x, int y); // 留덉슦???대룞 湲곕줉.
 
-    void Update(float deltaTime); // 프레임마다 게임 로직 갱신.
-    void Render(HDC hdc);         // 더블 버퍼를 사용해 화면 그리기.
+    void Update(float deltaTime); // ?꾨젅?꾨쭏??寃뚯엫 濡쒖쭅 媛깆떊.
+    void Render(HDC hdc);         // ?붾툝 踰꾪띁瑜??ъ슜???붾㈃ 洹몃━湲?
 
 private:
-    void UpdateWaterRect(); // 창 크기에 맞춰 수역/백버퍼 등 재계산.
-    bool LoadSprite(Sprite& sprite, const wchar_t* path); // 스프라이트 로드 헬퍼.
-    void EnsureBackBuffer(int width, int height); // 백버퍼 크기 확인/재생성.
-    void DestroyBackBuffer(); // 백버퍼 자원 해제.
-    void CheckMilestone(float deltaGold); // 누적 골드 milestone 체크 및 메시지 갱신.
-    void ResetGame(); // 점수/골드/레벨 초기화.
-    bool HandleDebugClick(const POINT& pt); // 디버그 패널 클릭 처리.
-    void LayoutDebugPanel(); // 디버그 버튼 영역 계산.
-    std::wstring ResourcePath(const wchar_t* relative) const; // 리소스 경로 해석.
+    void UpdateWaterRect(); // 李??ш린??留욎떠 ?섏뿭/諛깅쾭?????ш퀎??
+    bool LoadSprite(Sprite& sprite, const wchar_t* path); // ?ㅽ봽?쇱씠??濡쒕뱶 ?ы띁.
+    void EnsureBackBuffer(int width, int height); // 諛깅쾭???ш린 ?뺤씤/?ъ깮??
+    void DestroyBackBuffer(); // 諛깅쾭???먯썝 ?댁젣.
+    void CheckMilestone(float deltaGold); // ?꾩쟻 怨⑤뱶 milestone 泥댄겕 諛?硫붿떆吏 媛깆떊.
+    void ResetGame(); // ?먯닔/怨⑤뱶/?덈꺼 珥덇린??
+    bool HandleDebugClick(const POINT& pt); // ?붾쾭洹??⑤꼸 ?대┃ 泥섎━.
+    void LayoutDebugPanel(); // ?붾쾭洹?踰꾪듉 ?곸뿭 怨꾩궛.
+    std::wstring ResourcePath(const wchar_t* relative) const; // 由ъ냼??寃쎈줈 ?댁꽍.
 
-    HWND hwnd_;   // 윈도우 핸들.
-    int width_;   // 클라이언트 폭.
-    int height_;  // 클라이언트 높이.
-    GameState state_; // 게임 상태(인게임/상점/일시정지).
+    HWND hwnd_;   // ?덈룄???몃뱾.
+    int width_;   // ?대씪?댁뼵????
+    int height_;  // ?대씪?댁뼵???믪씠.
+    GameState state_; // 寃뚯엫 ?곹깭(?멸쾶???곸젏/?쇱떆?뺤?).
 
-    Player player_;           // 플레이어(보트) 객체.
-    FishingSystem fishing_;   // 낚시 시스템.
-    FishManager fishManager_; // 물고기 스폰/관리.
-    UI ui_;                   // HUD 렌더러.
-    Shop shop_;               // 상점 UI/로직.
+    Player player_;           // ?뚮젅?댁뼱(蹂댄듃) 媛앹껜.
+    FishingSystem fishing_;   // ?싳떆 ?쒖뒪??
+    FishManager fishManager_; // 臾쇨퀬湲??ㅽ룿/愿由?
+    UI ui_;                   // HUD ?뚮뜑??
+    Shop shop_;               // ?곸젏 UI/濡쒖쭅.
 
-    int score_;          // 누적 점수.
-    float goldBalance_;  // 현재 소지 골드.
-    float totalGold_;    // 누적 획득 골드(가격 상승 계산용).
-    int rodLevel_;       // 로드 레벨.
-    int lineLevel_;      // 라인 레벨.
-    int goldMilestone_;  // 다음 골드 상승 단계 인덱스.
-    float messageTimer_; // 메시지 표시 잔여 시간.
-    std::wstring messageText_; // 메시지 내용.
-    bool goldMaxed_;     // 골드 상승 상한 도달 여부.
-    bool debugPanelOpen_; // 디버그 패널 열림 여부.
-    RECT debugPanelRect_; // 디버그 패널 영역.
-    RECT debugAddGoldRect_; // 디버그: 골드 추가 버튼 영역.
-    RECT debugResetRect_;   // 디버그: 리셋 버튼 영역.
-    RECT debugRodUpRect_;   // 디버그: 로드 업 버튼.
-    RECT debugLineUpRect_;  // 디버그: 라인 업 버튼.
+    int score_;          // ?꾩쟻 ?먯닔.
+    float goldBalance_;  // ?꾩옱 ?뚯? 怨⑤뱶.
+    float totalGold_;    // ?꾩쟻 ?띾뱷 怨⑤뱶(媛寃??곸듅 怨꾩궛??.
+    int rodLevel_;       // 濡쒕뱶 ?덈꺼.
+    int lineLevel_;      // ?쇱씤 ?덈꺼.
+    int goldMilestone_;  // ?ㅼ쓬 怨⑤뱶 ?곸듅 ?④퀎 ?몃뜳??
+    float messageTimer_; // 硫붿떆吏 ?쒖떆 ?붿뿬 ?쒓컙.
+    std::wstring messageText_; // 硫붿떆吏 ?댁슜.
+    bool goldMaxed_;     // 怨⑤뱶 ?곸듅 ?곹븳 ?꾨떖 ?щ?.
+    bool debugPanelOpen_; // ?붾쾭洹??⑤꼸 ?대┝ ?щ?.
+    RECT debugPanelRect_; // ?붾쾭洹??⑤꼸 ?곸뿭.
+    RECT debugAddGoldRect_; // ?붾쾭洹? 怨⑤뱶 異붽? 踰꾪듉 ?곸뿭.
+    RECT debugResetRect_;   // ?붾쾭洹? 由ъ뀑 踰꾪듉 ?곸뿭.
+    RECT debugRodUpRect_;   // ?붾쾭洹? 濡쒕뱶 ??踰꾪듉.
+    RECT debugLineUpRect_;  // ?붾쾭洹? ?쇱씤 ??踰꾪듉.
 
-    float waterTop_;    // 수면의 Y 좌표.
-    float waterBottom_; // 수심 끝 Y 좌표.
-    RECT waterRect_;    // 수역 사각형.
+    float waterTop_;    // ?섎㈃??Y 醫뚰몴.
+    float waterBottom_; // ?섏떖 ??Y 醫뚰몴.
+    RECT waterRect_;    // ?섏뿭 ?ш컖??
 
-    Sprite spritePlayer_;      // 보트 스프라이트.
-    Sprite spriteFishSmall_;   // 소형 물고기 스프라이트.
-    Sprite spriteFishMedium_;  // 중형 물고기 스프라이트.
-    Sprite spriteFishLarge_;   // 대형 물고기 스프라이트.
-    std::filesystem::path exeDir_; // 실행 파일 위치 경로.
+    Sprite spritePlayer_;      // 蹂댄듃 ?ㅽ봽?쇱씠??
+    Sprite spriteFishSmall_;   // ?뚰삎 臾쇨퀬湲??ㅽ봽?쇱씠??
+    Sprite spriteFishMedium_;  // 以묓삎 臾쇨퀬湲??ㅽ봽?쇱씠??
+    Sprite spriteFishLarge_;   // ???臾쇨퀬湲??ㅽ봽?쇱씠??
+    std::filesystem::path exeDir_; // ?ㅽ뻾 ?뚯씪 ?꾩튂 寃쎈줈.
 
-    std::array<bool, 256> keyDown_;     // 현재 눌림 상태.
-    std::array<bool, 256> keyPressed_;  // 이번 프레임 눌림.
-    std::array<bool, 256> keyReleased_; // 이번 프레임 뗌.
+    std::array<bool, 256> keyDown_;     // ?꾩옱 ?뚮┝ ?곹깭.
+    std::array<bool, 256> keyPressed_;  // ?대쾲 ?꾨젅???뚮┝.
+    std::array<bool, 256> keyReleased_; // ?대쾲 ?꾨젅????
 
-    bool mouseDown_;    // 마우스 버튼 지속 눌림.
-    bool mousePressed_; // 이번 프레임 눌림.
-    bool mouseReleased_; // 이번 프레임 뗌.
-    bool inputBlocked_;  // UI 등으로 입력 소비 여부.
-    POINT mousePos_;     // 현재 마우스 위치.
+    bool mouseDown_;    // 留덉슦??踰꾪듉 吏???뚮┝.
+    bool mousePressed_; // ?대쾲 ?꾨젅???뚮┝.
+    bool mouseReleased_; // ?대쾲 ?꾨젅????
+    bool inputBlocked_;  // UI ?깆쑝濡??낅젰 ?뚮퉬 ?щ?.
+    POINT mousePos_;     // ?꾩옱 留덉슦???꾩튂.
 
-    HDC backDC_;       // 백버퍼 DC.
-    HBITMAP backBmp_;  // 백버퍼 비트맵.
-    HBITMAP backOld_;  // 선택되어 있던 이전 비트맵.
+    HDC backDC_;       // 諛깅쾭??DC.
+    HBITMAP backBmp_;  // 諛깅쾭??鍮꾪듃留?
+    HBITMAP backOld_;  // ?좏깮?섏뼱 ?덈뜕 ?댁쟾 鍮꾪듃留?
 
 };

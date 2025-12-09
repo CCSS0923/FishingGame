@@ -1,4 +1,4 @@
-// 플레이어 이동, 입력 반영, 스프라이트 렌더링을 구현한 소스입니다.
+﻿// ?뚮젅?댁뼱 ?대룞, ?낅젰 諛섏쁺, ?ㅽ봽?쇱씠???뚮뜑留곸쓣 援ы쁽???뚯뒪?낅땲??
 #include "Player.h"
 
 Player::Player()
@@ -6,7 +6,7 @@ Player::Player()
 {
 }
 
-// 위치를 즉시 좌표로 설정.
+// ?꾩튂瑜?利됱떆 醫뚰몴濡??ㅼ젙.
 void Player::SetPosition(float x, float y)
 {
     x_ = x;
@@ -18,7 +18,7 @@ void Player::SetSpeed(float speed)
     speed_ = speed;
 }
 
-// 입력 플래그와 델타 시간에 따라 수평 이동 처리.
+// ?낅젰 ?뚮옒洹몄? ?명? ?쒓컙???곕씪 ?섑룊 ?대룞 泥섎━.
 void Player::Update(bool moveLeft, bool moveRight, float deltaTime, int windowWidth)
 {
     if (moveLeft)
@@ -26,13 +26,13 @@ void Player::Update(bool moveLeft, bool moveRight, float deltaTime, int windowWi
     if (moveRight)
         x_ += speed_ * deltaTime;
 
-    const float minX = 0.0f;   // 화면 좌측 한계
+    const float minX = 0.0f;   // ?붾㈃ 醫뚯륫 ?쒓퀎
     const float maxX = static_cast<float>(windowWidth - kWidth);
     if (x_ < minX) x_ = minX;
     if (x_ > maxX) x_ = maxX;
 }
 
-// 보트 스프라이트가 없으면 단순 도형으로 렌더링.
+// 蹂댄듃 ?ㅽ봽?쇱씠?멸? ?놁쑝硫??⑥닚 ?꾪삎?쇰줈 ?뚮뜑留?
 void Player::Render(HDC hdc) const
 {
     RECT r = GetHitRect();
@@ -66,7 +66,7 @@ RECT Player::GetHitRect() const
 
 POINT Player::GetLineOrigin() const
 {
-    // 낚싯줄이 나가는 기준점을 보트 상단 중앙으로 설정.
+    // ?싳떙以꾩씠 ?섍???湲곗??먯쓣 蹂댄듃 ?곷떒 以묒븰?쇰줈 ?ㅼ젙.
     return POINT{
         static_cast<LONG>(x_ + kWidth / 2),
         static_cast<LONG>(y_)

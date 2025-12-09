@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="D:\Cpp\FishingGame\build\CMakeFiles\a67cd145a0506330a724309d28ed52bf\generate.stamp.rule">
+    <CustomBuild Include="G:\VC++\FishingGame\build\CMakeFiles\1a01098629bf5611483b55e4248dfb79\generate.stamp.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{006137CC-F624-3937-B909-EBC52AA8BA98}</UniqueIdentifier>
+      <UniqueIdentifier>{36E1BBF8-7741-3598-9A5E-35FDAB84568A}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

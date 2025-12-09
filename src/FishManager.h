@@ -1,4 +1,4 @@
-// 물고기 풀을 관리하며 생성, 충돌 검사, 업데이트, 정리를 담당하는 매니저 헤더입니다.
+﻿// 臾쇨퀬湲????愿由ы븯硫??앹꽦, 異⑸룎 寃?? ?낅뜲?댄듃, ?뺣━瑜??대떦?섎뒗 留ㅻ땲? ?ㅻ뜑?낅땲??
 #pragma once
 
 #include <list>
@@ -10,35 +10,35 @@
 class FishManager
 {
 public:
-    FishManager(); // 물고기 풀 관리 초기화.
+    FishManager(); // 臾쇨퀬湲?? 愿由?珥덇린??
 
-    // 각 크기별 물고기 스프라이트 연결.
+    // 媛??ш린蹂?臾쇨퀬湲??ㅽ봽?쇱씠???곌껐.
     void SetSprites(Sprite* smallSprite, Sprite* mediumSprite, Sprite* largeSprite);
-    // 물 영역 설정.
+    // 臾??곸뿭 ?ㅼ젙.
     void SetWaterRect(const RECT& rect);
-    // 모든 물고기 제거.
+    // 紐⑤뱺 臾쇨퀬湲??쒓굅.
     void Clear();
 
-    // 물고기 생성/이동/제거 갱신.
+    // 臾쇨퀬湲??앹꽦/?대룞/?쒓굅 媛깆떊.
     void Update(float deltaTime);
-    // 가시 영역에 있는 물고기 렌더링.
+    // 媛???곸뿭???덈뒗 臾쇨퀬湲??뚮뜑留?
     void Render(HDC hdc) const;
 
-    // 바늘 영역과 충돌한 물고기 포인터 반환.
+    // 諛붾뒛 ?곸뿭怨?異⑸룎??臾쇨퀬湲??ъ씤??諛섑솚.
     Fish* CheckHookCollision(const RECT& hookRect);
 
     size_t GetFishCount() const { return fishes_.size(); }
 
 private:
-    Fish* Spawn(); // 새 물고기 한 마리를 생성/등록.
+    Fish* Spawn(); // ??臾쇨퀬湲???留덈━瑜??앹꽦/?깅줉.
 
-    std::list<Fish> fishes_; // 관리 중인 물고기 목록.
-    RECT waterRect_;         // 물 영역.
-    float spawnTimer_;       // 다음 스폰까지 남은 시간.
-    float spawnInterval_;    // 스폰 주기.
-    std::mt19937 rng_;       // 랜덤 생성기.
+    std::list<Fish> fishes_; // 愿由?以묒씤 臾쇨퀬湲?紐⑸줉.
+    RECT waterRect_;         // 臾??곸뿭.
+    float spawnTimer_;       // ?ㅼ쓬 ?ㅽ룿源뚯? ?⑥? ?쒓컙.
+    float spawnInterval_;    // ?ㅽ룿 二쇨린.
+    std::mt19937 rng_;       // ?쒕뜡 ?앹꽦湲?
 
-    Sprite* smallSprite_;    // 소형 스프라이트.
-    Sprite* mediumSprite_;   // 중형 스프라이트.
-    Sprite* largeSprite_;    // 대형 스프라이트.
+    Sprite* smallSprite_;    // ?뚰삎 ?ㅽ봽?쇱씠??
+    Sprite* mediumSprite_;   // 以묓삎 ?ㅽ봽?쇱씠??
+    Sprite* largeSprite_;    // ????ㅽ봽?쇱씠??
 };

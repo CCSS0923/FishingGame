@@ -1,30 +1,30 @@
-// 게임 전역 상태와 낚시 상태를 열거형으로 정의하고 2D 벡터 유틸 구조체를 제공하는 헤더입니다.
+﻿// 寃뚯엫 ?꾩뿭 ?곹깭? ?싳떆 ?곹깭瑜??닿굅?뺤쑝濡??뺤쓽?섍퀬 2D 踰≫꽣 ?좏떥 援ъ“泥대? ?쒓났?섎뒗 ?ㅻ뜑?낅땲??
 // High level game and fishing state definitions.
 #pragma once
 
-// 전반적인 게임 진행 상태.
+// ?꾨컲?곸씤 寃뚯엫 吏꾪뻾 ?곹깭.
 enum class GameState
 {
-    InGame, // 기본 플레이 중.
-    Shop,   // 상점 UI가 열려 있음.
-    Pause   // 일시 정지 상태.
+    InGame, // 湲곕낯 ?뚮젅??以?
+    Shop,   // ?곸젏 UI媛 ?대젮 ?덉쓬.
+    Pause   // ?쇱떆 ?뺤? ?곹깭.
 };
 
-// 낚시 라인의 현재 단계 상태.
+// ?싳떆 ?쇱씤???꾩옱 ?④퀎 ?곹깭.
 enum class FishingState
 {
-    Idle,     // 아무 것도 하지 않는 상태.
-    Charging, // 던지기 힘을 모으는 중.
-    Casting,  // 던지기 직후 전환 단계.
-    Floating, // 찌가 떠 있는 대기 중.
-    Bite,     // 물고기가 미끼를 무는 중.
-    Reeling,  // 릴 당기는 중.
-    Caught,   // 낚시에 성공한 단계.
-    Fail      // 장력이 꽉 차 실패한 단계.
+    Idle,     // ?꾨Т 寃껊룄 ?섏? ?딅뒗 ?곹깭.
+    Charging, // ?섏?湲??섏쓣 紐⑥쑝??以?
+    Casting,  // ?섏?湲?吏곹썑 ?꾪솚 ?④퀎.
+    Floating, // 李뚭? ???덈뒗 ?湲?以?
+    Bite,     // 臾쇨퀬湲곌? 誘몃겮瑜?臾대뒗 以?
+    Reeling,  // 由??밴린??以?
+    Caught,   // ?싳떆???깃났???④퀎.
+    Fail      // ?λ젰??苑?李??ㅽ뙣???④퀎.
 };
 
 struct Float2
 {
-    float x = 0.0f; // X 좌표.
-    float y = 0.0f; // Y 좌표.
+    float x = 0.0f; // X 醫뚰몴.
+    float y = 0.0f; // Y 醫뚰몴.
 };

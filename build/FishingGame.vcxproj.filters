@@ -1,80 +1,80 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="D:\Cpp\FishingGame\src\main.cpp">
+    <ClCompile Include="G:\VC++\FishingGame\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Cpp\FishingGame\src\Game.cpp">
+    <ClCompile Include="G:\VC++\FishingGame\src\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Cpp\FishingGame\src\Player.cpp">
+    <ClCompile Include="G:\VC++\FishingGame\src\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Cpp\FishingGame\src\FishingSystem.cpp">
+    <ClCompile Include="G:\VC++\FishingGame\src\FishingSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Cpp\FishingGame\src\Fish.cpp">
+    <ClCompile Include="G:\VC++\FishingGame\src\Fish.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Cpp\FishingGame\src\FishManager.cpp">
+    <ClCompile Include="G:\VC++\FishingGame\src\FishManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Cpp\FishingGame\src\UI.cpp">
+    <ClCompile Include="G:\VC++\FishingGame\src\UI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Cpp\FishingGame\src\Shop.cpp">
+    <ClCompile Include="G:\VC++\FishingGame\src\Shop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Cpp\FishingGame\src\Sprite.cpp">
+    <ClCompile Include="G:\VC++\FishingGame\src\Sprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D:\Cpp\FishingGame\src\Game.h">
+    <ClInclude Include="G:\VC++\FishingGame\src\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Cpp\FishingGame\src\Player.h">
+    <ClInclude Include="G:\VC++\FishingGame\src\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Cpp\FishingGame\src\FishingSystem.h">
+    <ClInclude Include="G:\VC++\FishingGame\src\FishingSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Cpp\FishingGame\src\Fish.h">
+    <ClInclude Include="G:\VC++\FishingGame\src\Fish.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Cpp\FishingGame\src\FishManager.h">
+    <ClInclude Include="G:\VC++\FishingGame\src\FishManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Cpp\FishingGame\src\UI.h">
+    <ClInclude Include="G:\VC++\FishingGame\src\UI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Cpp\FishingGame\src\Shop.h">
+    <ClInclude Include="G:\VC++\FishingGame\src\Shop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Cpp\FishingGame\src\Sprite.h">
+    <ClInclude Include="G:\VC++\FishingGame\src\Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Cpp\FishingGame\src\Resource.h">
+    <ClInclude Include="G:\VC++\FishingGame\src\Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Cpp\FishingGame\src\State.h">
+    <ClInclude Include="G:\VC++\FishingGame\src\State.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="D:\Cpp\FishingGame\CMakeLists.txt" />
+    <CustomBuild Include="G:\VC++\FishingGame\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="D:\Cpp\FishingGame\res\game.rc">
+    <ResourceCompile Include="G:\VC++\FishingGame\res\game.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{D1477D48-B81D-30AE-B024-6A3FD948B606}</UniqueIdentifier>
+      <UniqueIdentifier>{FB879475-525A-3761-8D60-B0D9A74A6F58}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{3E81515B-33D0-3EDD-A2AE-9C48D4427E2A}</UniqueIdentifier>
+      <UniqueIdentifier>{D4D531C9-4A6D-3F2C-A8B2-2CB7B566B599}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,12 +1,12 @@
-// 물고기 스폰, 이동/제거 업데이트, 렌더링과 충돌 검사를 관리하는 매니저 구현입니다.
+﻿// 臾쇨퀬湲??ㅽ룿, ?대룞/?쒓굅 ?낅뜲?댄듃, ?뚮뜑留곴낵 異⑸룎 寃?щ? 愿由ы븯??留ㅻ땲? 援ы쁽?낅땲??
 #include "FishManager.h"
 
 #include <algorithm>
 
 FishManager::FishManager()
     : waterRect_{ 0, 0, 0, 0 }
-    , spawnTimer_(0.0f)     // 스폰까지 남은 시간
-    , spawnInterval_(2.0f)  // 기본 스폰 주기(초)
+    , spawnTimer_(0.0f)     // ?ㅽ룿源뚯? ?⑥? ?쒓컙
+    , spawnInterval_(2.0f)  // 湲곕낯 ?ㅽ룿 二쇨린(珥?
     , rng_(static_cast<unsigned int>(std::random_device{}()))
     , smallSprite_(nullptr)
     , mediumSprite_(nullptr)
@@ -14,7 +14,7 @@ FishManager::FishManager()
 {
 }
 
-// 각 크기별 물고기 스프라이트 연결.
+// 媛??ш린蹂?臾쇨퀬湲??ㅽ봽?쇱씠???곌껐.
 void FishManager::SetSprites(Sprite* smallSprite, Sprite* mediumSprite, Sprite* largeSprite)
 {
     smallSprite_ = smallSprite;
@@ -22,19 +22,19 @@ void FishManager::SetSprites(Sprite* smallSprite, Sprite* mediumSprite, Sprite* 
     largeSprite_ = largeSprite;
 }
 
-// 물 영역 설정.
+// 臾??곸뿭 ?ㅼ젙.
 void FishManager::SetWaterRect(const RECT& rect)
 {
     waterRect_ = rect;
 }
 
-// 모든 물고기 제거.
+// 紐⑤뱺 臾쇨퀬湲??쒓굅.
 void FishManager::Clear()
 {
     fishes_.clear();
 }
 
-// 무작위 물고기 한 마리를 생성해 등록.
+// 臾댁옉??臾쇨퀬湲???留덈━瑜??앹꽦???깅줉.
 Fish* FishManager::Spawn()
 {
     Fish fish = Fish::SpawnRandom(waterRect_, rng_);
@@ -54,25 +54,25 @@ Fish* FishManager::Spawn()
     return &fishes_.back();
 }
 
-// 스폰 타이머/물고기 이동/제거를 갱신한다.
+// ?ㅽ룿 ??대㉧/臾쇨퀬湲??대룞/?쒓굅瑜?媛깆떊?쒕떎.
 void FishManager::Update(float deltaTime)
 {
     spawnTimer_ -= deltaTime;
     if (spawnTimer_ <= 0.0f)
     {
         Spawn();
-        spawnInterval_ = 1.5f + static_cast<float>((rng_() % 150) / 100.0f); // 1.5~3.0초 랜덤 스폰
+        spawnInterval_ = 1.5f + static_cast<float>((rng_() % 150) / 100.0f); // 1.5~3.0珥??쒕뜡 ?ㅽ룿
         spawnTimer_ = spawnInterval_;
     }
 
     RECT bounds = waterRect_;
-    bounds.left -= 20;   // 화면 밖 여유 영역
-    bounds.right += 20;  // 화면 밖 여유 영역
+    bounds.left -= 20;   // ?붾㈃ 諛??ъ쑀 ?곸뿭
+    bounds.right += 20;  // ?붾㈃ 諛??ъ쑀 ?곸뿭
 
     for (auto& fish : fishes_)
     {
         fish.Update(deltaTime, bounds);
-        // 수면 밖으로 지나친 물고기는 바로 제거.
+        // ?섎㈃ 諛뽰쑝濡?吏?섏튇 臾쇨퀬湲곕뒗 諛붾줈 ?쒓굅.
         FishTraits t = GetTraits(fish.GetType());
         RECT r = fish.GetRect();
         if (r.right < bounds.left - t.size.cx || r.left > bounds.right + t.size.cx)
@@ -84,12 +84,12 @@ void FishManager::Update(float deltaTime)
     fishes_.remove_if([](const Fish& f) { return !f.IsAlive(); });
 }
 
-// 화면 근처에 있는 물고기만 렌더링.
+// ?붾㈃ 洹쇱쿂???덈뒗 臾쇨퀬湲곕쭔 ?뚮뜑留?
 void FishManager::Render(HDC hdc) const
 {
-    // 간단 컬링: 물 영역 + 여백을 벗어나면 스킵.
+    // 媛꾨떒 而щ쭅: 臾??곸뿭 + ?щ갚??踰쀬뼱?섎㈃ ?ㅽ궢.
     RECT view = waterRect_;
-    InflateRect(&view, 32, 32); // 광역 체크 박스 확장
+    InflateRect(&view, 32, 32); // 愿묒뿭 泥댄겕 諛뺤뒪 ?뺤옣
     for (const auto& fish : fishes_)
     {
         RECT r = fish.GetRect();
@@ -100,7 +100,7 @@ void FishManager::Render(HDC hdc) const
     }
 }
 
-// 바늘 충돌 박스와 겹치는 살아있는 물고기 포인터 반환.
+// 諛붾뒛 異⑸룎 諛뺤뒪? 寃뱀튂???댁븘?덈뒗 臾쇨퀬湲??ъ씤??諛섑솚.
 Fish* FishManager::CheckHookCollision(const RECT& hookRect)
 {
     RECT overlap{};

@@ -1,4 +1,4 @@
-// GDI+ 기반으로 스프라이트를 로드하고 화면에 그리는 간단한 유틸리티 클래스를 선언합니다.
+﻿// GDI+ 湲곕컲?쇰줈 ?ㅽ봽?쇱씠?몃? 濡쒕뱶?섍퀬 ?붾㈃??洹몃━??媛꾨떒???좏떥由ы떚 ?대옒?ㅻ? ?좎뼵?⑸땲??
 #pragma once
 
 #include <windows.h>
@@ -9,14 +9,14 @@
 class Sprite
 {
 public:
-    Sprite() = default;  // 기본 생성자.
-    ~Sprite() = default; // 기본 소멸자.
+    Sprite() = default;  // 湲곕낯 ?앹꽦??
+    ~Sprite() = default; // 湲곕낯 ?뚮㈇??
 
-    // 파일 경로에서 이미지를 로드.
+    // ?뚯씪 寃쎈줈?먯꽌 ?대?吏瑜?濡쒕뱶.
     bool Load(const std::wstring& path);
-    // 이미지를 지정 위치/크기로 그리기.
+    // ?대?吏瑜?吏???꾩튂/?ш린濡?洹몃━湲?
     void Draw(HDC hdc, int x, int y, int width = -1, int height = -1) const;
-    // 이미지를 좌우 반전하여 그리기.
+    // ?대?吏瑜?醫뚯슦 諛섏쟾?섏뿬 洹몃━湲?
     void DrawFlippedH(HDC hdc, int x, int y, int width = -1, int height = -1) const;
 
     UINT GetWidth() const;
@@ -24,5 +24,5 @@ public:
     bool IsValid() const { return image_ != nullptr; }
 
 private:
-    std::unique_ptr<Gdiplus::Image> image_; // 로드된 GDI+ 이미지.
+    std::unique_ptr<Gdiplus::Image> image_; // 濡쒕뱶??GDI+ ?대?吏.
 };

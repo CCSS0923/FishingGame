@@ -1,4 +1,4 @@
-// 상점 UI와 구매 로직을 정의하는 헤더로 아이템 목록, 가격, 구매 처리 인터페이스를 제공합니다.
+﻿// ?곸젏 UI? 援щℓ 濡쒖쭅???뺤쓽?섎뒗 ?ㅻ뜑濡??꾩씠??紐⑸줉, 媛寃? 援щℓ 泥섎━ ?명꽣?섏씠?ㅻ? ?쒓났?⑸땲??
 #pragma once
 
 #include <windows.h>
@@ -8,27 +8,27 @@
 class Shop
 {
 public:
-    Shop(); // 상점 UI 초기화.
+    Shop(); // ?곸젏 UI 珥덇린??
 
-    // 게임 창 크기에 맞춰 영역 재계산.
+    // 寃뚯엫 李??ш린??留욎떠 ?곸뿭 ?ш퀎??
     void SetClientSize(int width, int height);
 
-    // 상점 열기/닫기 토글.
+    // ?곸젏 ?닿린/?リ린 ?좉?.
     void Toggle();
     bool IsOpen() const { return open_; }
 
-    // 상점 UI 렌더링.
+    // ?곸젏 UI ?뚮뜑留?
     void Render(HDC hdc, float money, int rodLevel, int lineLevel) const;
-    // 상점 클릭 처리: 업그레이드 구매 시 금액/레벨 수정.
+    // ?곸젏 ?대┃ 泥섎━: ?낃렇?덉씠??援щℓ ??湲덉븸/?덈꺼 ?섏젙.
     bool HandleClick(POINT pt, float& money, int& rodLevel, int& lineLevel);
 
 private:
-    RECT panelRect_;  // 상점 패널 영역.
-    RECT rodButton_;  // 로드 업그레이드 버튼 영역.
-    RECT lineButton_; // 라인 업그레이드 버튼 영역.
+    RECT panelRect_;  // ?곸젏 ?⑤꼸 ?곸뿭.
+    RECT rodButton_;  // 濡쒕뱶 ?낃렇?덉씠??踰꾪듉 ?곸뿭.
+    RECT lineButton_; // ?쇱씤 ?낃렇?덉씠??踰꾪듉 ?곸뿭.
 
-    bool open_;  // 열림 상태 플래그.
-    int width_;  // 클라이언트 폭.
-    int height_; // 클라이언트 높이.
+    bool open_;  // ?대┝ ?곹깭 ?뚮옒洹?
+    int width_;  // ?대씪?댁뼵????
+    int height_; // ?대씪?댁뼵???믪씠.
 
 };
